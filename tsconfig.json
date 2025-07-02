@@ -26,6 +26,8 @@
       "@assets/*": ["./assets/*"],
       "@contexts": ["./contexts/index"],
       "@utils/*": ["./utils/*"],
+      "@navigation": ["./navigation/index"],
+      "@navigation/*": ["./navigation/*"]
     }
   },
   "include": [

@@ -5,7 +5,7 @@ import { ColorsEnum } from "@utils/enums";
 import * as LucideIcons from "lucide-react";
 
 // Types d'entrée pris en charge
-export type InputType = "text" | "password" | "date" | "time" | "textarea";
+export type InputType = "text" | "password" | "date" | "time" | "textarea" | "email";
 
 // Position de l'icône
 type IconPosition = "left" | "right";

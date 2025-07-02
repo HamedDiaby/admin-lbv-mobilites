@@ -9,3 +9,4 @@ export * from './modal';
 export * from './modalConfirm';
 export * from './switch';
 export * from './badge';
+export * from './text';
