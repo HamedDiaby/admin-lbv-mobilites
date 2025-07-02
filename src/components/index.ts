@@ -2,7 +2,7 @@ export * from './button';
 export * from './card';
 export * from './checkbox';
 export * from './icon';
-export * from './Input';
+export * from './input';
 export * from './select';
 export * from './table';
 export * from './modal';
