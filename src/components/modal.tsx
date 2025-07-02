@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect, useRef } from "react";
 import { Icon } from "./icon";
 import { Text } from "./text";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 import { createPortal } from "react-dom";
 
 // Types de taille pour la largeur de la modal

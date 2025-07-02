@@ -1,6 +1,6 @@
 import { FC } from "react";
 import * as LucideIcons from "lucide-react";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 
 // Types pour les props du composant Icon
 export interface IconProps {

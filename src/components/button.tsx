@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, FC, ReactNode } from "react";
 import { Icon } from "./icon";
 import * as LucideIcons from "lucide-react";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 
 // Types d'apparence du bouton
 export type ButtonAppearance = "solid" | "outline" | "clear";

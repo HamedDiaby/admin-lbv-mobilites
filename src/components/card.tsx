@@ -1,6 +1,6 @@
 import { FC, ReactNode, HTMLAttributes } from "react";
 import { Text } from "./text";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 
 export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   // Titre de la carte (optionnel)

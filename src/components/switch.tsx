@@ -1,6 +1,6 @@
 import { FC, InputHTMLAttributes, useState, ChangeEvent, FocusEvent } from "react";
 import { Text } from "./text";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 
 // Interface pour les props du composant Switch
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {

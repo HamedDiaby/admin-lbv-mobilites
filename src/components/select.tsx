@@ -1,7 +1,7 @@
 import { FC, SelectHTMLAttributes, useState, useRef, ChangeEvent, FocusEvent } from "react";
 import { Icon } from "./icon";
 import { Text } from "./text";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 import * as LucideIcons from "lucide-react";
 
 // Type pour les options du select

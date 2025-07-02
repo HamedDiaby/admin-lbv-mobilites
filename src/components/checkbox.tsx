@@ -1,7 +1,7 @@
 import { FC, InputHTMLAttributes, useState, useRef, ChangeEvent, FocusEvent, useEffect } from "react";
 import { Icon } from "./icon";
 import { Text } from "./text";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 
 // Interface pour les props du composant Checkbox
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {

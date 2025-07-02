@@ -3,7 +3,7 @@ import { Modal } from "./modal";
 import { Button } from "./button";
 import { Icon } from "./icon";
 import { Text } from "./text";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 
 // Types de dialogues de confirmation
 export type ConfirmType = "success" | "error" | "warning" | "info" | "question" | "custom";

@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes, ReactNode } from "react";
 import { Icon } from "./icon";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 import * as LucideIcons from "lucide-react";
 
 // Types de variantes pour le badge

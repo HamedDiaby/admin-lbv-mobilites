@@ -1,7 +1,7 @@
 import { FC, ReactNode, useState, useEffect, ChangeEvent, useMemo } from "react";
 import { Card, CardProps } from "./card";
 import { Text } from "./text";
-import { ColorsEnum } from "../utils/enums";
+import { ColorsEnum } from "@utils/enums";
 import { Button } from "./button";
 import { Icon } from "./icon";
 import { Input } from "./input";
