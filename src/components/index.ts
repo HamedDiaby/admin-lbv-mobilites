@@ -8,5 +8,4 @@ export * from './table';
 export * from './modal';
 export * from './modalConfirm';
 export * from './switch';
-export * from './table';
 export * from './badge';
