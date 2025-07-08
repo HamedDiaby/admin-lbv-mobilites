@@ -189,7 +189,6 @@ export const Buses: FC = () => {
 
   // Fonction pour ajouter un bus
   const handleAddBus = (busData: NewBusData) => {
-    const station = stations.find(s => s.id === busData.stationId);
     const newBus: Bus = {
       id: Date.now().toString(),
       numero: busData.numero,
@@ -201,8 +200,6 @@ export const Buses: FC = () => {
       annee: busData.annee,
       couleur: busData.couleur,
       statut: 'actif',
-      stationId: busData.stationId,
-      stationName: station?.name,
       obd2Data: {
         vitesse: 0,
         rpm: 0,
@@ -584,7 +581,6 @@ export const Buses: FC = () => {
         isOpen={showAddBusModal}
         onClose={() => setShowAddBusModal(false)}
         onSave={handleAddBus}
-        stations={stations}
       />
 
       <BusDetailsModal

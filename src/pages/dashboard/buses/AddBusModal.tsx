@@ -2,20 +2,17 @@ import { FC, useState } from "react";
 import { Modal, Text, Input, Select, Button } from "@components";
 import { ColorsEnum } from "@utils/enums";
 import { NewBusData, BusFormErrors } from "./types";
-import { Station } from "../stations/types";
 
 interface AddBusModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (busData: NewBusData) => void;
-  stations: Station[];
 }
 
 export const AddBusModal: FC<AddBusModalProps> = ({
   isOpen,
   onClose,
-  onSave,
-  stations
+  onSave
 }) => {
   const [formData, setFormData] = useState<NewBusData>({
     numero: '',
@@ -25,8 +22,7 @@ export const AddBusModal: FC<AddBusModalProps> = ({
     marque: '',
     modele: '',
     annee: new Date().getFullYear(),
-    couleur: '',
-    stationId: ''
+    couleur: ''
   });
 
   const [errors, setErrors] = useState<BusFormErrors>({});
@@ -154,8 +150,7 @@ export const AddBusModal: FC<AddBusModalProps> = ({
         marque: '',
         modele: '',
         annee: new Date().getFullYear(),
-        couleur: '',
-        stationId: ''
+        couleur: ''
       });
       setErrors({});
       onClose();
@@ -291,25 +286,6 @@ export const AddBusModal: FC<AddBusModalProps> = ({
                 fullWidth
               />
             </div>
-          </div>
-        </div>
-
-        {/* Affectation */}
-        <div>
-          <Text variant="h4" color={ColorsEnum.TEXT_PRIMARY} className="font-semibold mb-4">
-            Affectation (optionnel)
-          </Text>
-          <div>
-            <Select
-              label="Station d'affectation"
-              placeholder="Sélectionnez une station"
-              options={stations.map(station => ({ value: station.id, label: station.name }))}
-              value={formData.stationId || ''}
-              onChange={(e) => handleChange('stationId', e.target.value)}
-              error={errors.stationId}
-              helperText="Station où le bus sera basé"
-              fullWidth
-            />
           </div>
         </div>
 

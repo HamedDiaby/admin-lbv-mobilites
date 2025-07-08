@@ -73,7 +73,6 @@ export interface NewBusData {
   modele: string;
   annee: number;
   couleur: string;
-  stationId?: string;
 }
 
 export interface BusFormErrors {
@@ -85,7 +84,6 @@ export interface BusFormErrors {
   modele?: string;
   annee?: string;
   couleur?: string;
-  stationId?: string;
 }
 
 // Types pour les filtres
