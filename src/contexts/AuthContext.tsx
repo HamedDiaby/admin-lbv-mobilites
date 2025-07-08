@@ -14,6 +14,7 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, rememberMe: boolean) => void;
   logout: () => void;
+  updateUser: (userData: Partial<User>) => void;
   isLoading: boolean;
 }
 
@@ -86,11 +87,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem('rememberMe');
   };
 
+  const updateUser = (userData: Partial<User>) => {
+    if (user) {
+      const updatedUser = { ...user, ...userData };
+      setUser(updatedUser);
+      // Mise à jour du localStorage si l'email change
+      if (userData.email) {
+        localStorage.setItem('userEmail', userData.email);
+      }
+    }
+  };
+
   const value = {
     isAuthenticated,
     user,
     login,
     logout,
+    updateUser,
     isLoading
   };
 

@@ -1,10 +1,38 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Text, Card, Icon, Button } from "@components";
 import { ColorsEnum } from "@utils/enums";
 import { useAuth } from "@contexts";
+import { EditProfileModal, ProfileData } from "./EditProfileModal";
 
 export const Profile: FC = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const handleEditProfile = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveProfile = async (profileData: ProfileData) => {
+    try {
+      // Simulation d'un appel API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mise à jour du contexte utilisateur
+      updateUser({
+        firstName: profileData.firstName,
+        lastName: profileData.lastName,
+        email: profileData.email,
+        department: profileData.department
+      });
+      
+      setIsEditModalOpen(false);
+      // Ici, vous pourriez ajouter une notification de succès
+      console.log('Profil mis à jour avec succès');
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du profil:', error);
+      // Ici, vous pourriez ajouter une notification d'erreur
+    }
+  };
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
@@ -25,6 +53,7 @@ export const Profile: FC = () => {
           iconName="Edit"
           iconPosition="left"
           className="border-green text-green hover:bg-green hover:text-white"
+          onClick={handleEditProfile}
         >
           Modifier
         </Button>
@@ -185,6 +214,7 @@ export const Profile: FC = () => {
             iconName="Edit"
             iconPosition="left"
             className="border-blue text-blue hover:bg-blue hover:text-white"
+            onClick={handleEditProfile}
           >
             Modifier le profil
           </Button>
@@ -210,6 +240,13 @@ export const Profile: FC = () => {
           </Button>
         </div>
       </Card>
+
+      {/* Modal de modification du profil */}
+      <EditProfileModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSave={handleSaveProfile}
+      />
     </div>
   );
 };
