@@ -25,7 +25,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, onClick, active, 
         onClick={onClick}
         className={`
           group flex items-center w-full transition-all duration-200
-          ${collapsed ? 'px-3 py-3 justify-center' : 'px-3 py-3'}
+          ${collapsed ? 'px-2 py-2 justify-center' : 'px-3 py-3'}
           rounded-xl
           ${active 
             ? 'bg-yellow text-blue-dark shadow-lg transform scale-105' 
@@ -35,8 +35,8 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, onClick, active, 
         title={collapsed ? text : undefined}
       >
         <div className={`
-          flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200
-          ${collapsed ? 'mr-0' : 'mr-3'}
+          flex items-center justify-center rounded-lg transition-all duration-200
+          ${collapsed ? 'w-8 h-8 mr-0' : 'w-8 h-8 mr-3'}
           ${active 
             ? 'bg-blue-dark/20' 
             : 'bg-white/10 group-hover:bg-yellow-light/20'
@@ -86,9 +86,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isCollapsed, onClose }
     `}>
       {/* En-tête avec logo */}
       <div className={`border-b border-green-light/20 transition-all duration-300 ${
-        isCollapsed ? 'p-4' : 'p-6'
+        isCollapsed ? 'p-3' : 'p-6'
       }`}>
-        <div className="flex items-center justify-center lg:justify-start">
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-center lg:justify-start'}`}>
           <div className="flex items-center justify-center w-10 h-10 bg-yellow rounded-lg shadow-md">
             <Icon name="Bus" size={24} color={ColorsEnum.BLUE_DARK} />
           </div>
@@ -106,7 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isCollapsed, onClose }
       </div>
       
       {/* Navigation */}
-      <nav className="px-4 py-6">
+      <nav className={`py-6 transition-all duration-300 ${isCollapsed ? 'px-2' : 'px-4'}`}>
         <ul className="space-y-2">
           {MENU_ITEMS.map((item) => (
             <SidebarItem 
