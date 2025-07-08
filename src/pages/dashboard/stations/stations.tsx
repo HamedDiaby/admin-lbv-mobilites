@@ -4,9 +4,10 @@ import { ColorsEnum } from "@utils/enums";
 import { City, Station, NewCityData, NewStationData } from "./types";
 import { AddCityModal } from "./AddCityModal";
 import { AddStationModal } from "./AddStationModal";
+import { StationMap } from "./StationMap";
 
 export const Stations: FC = () => {
-  const [activeTab, setActiveTab] = useState<'cities' | 'stations'>('cities');
+  const [activeTab, setActiveTab] = useState<'cities' | 'stations' | 'map'>('cities');
   const [showAddCityModal, setShowAddCityModal] = useState(false);
   const [showAddStationModal, setShowAddStationModal] = useState(false);
   
@@ -555,6 +556,17 @@ export const Stations: FC = () => {
             <Icon name="Bus" size={16} className="mr-2 inline" />
             Stations ({stations.length})
           </button>
+          <button
+            onClick={() => setActiveTab('map')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'map'
+                ? 'border-green text-green'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <Icon name="Map" size={16} className="mr-2 inline" />
+            Carte
+          </button>
         </nav>
       </div>
 
@@ -576,7 +588,7 @@ export const Stations: FC = () => {
           onAdd={() => setShowAddCityModal(true)}
           addButtonText="Ajouter une ville"
         />
-      ) : (
+      ) : activeTab === 'stations' ? (
         <div className="space-y-4">
           {/* Filtres */}
           <div className="bg-white p-4 rounded-lg border border-gray-200">
@@ -669,6 +681,14 @@ export const Stations: FC = () => {
             addButtonText="Ajouter une station"
           />
         </div>
+      ) : (
+        <StationMap
+          stations={stations}
+          cities={cities}
+          onStationClick={(station) => {
+            console.log('Station cliquée:', station);
+          }}
+        />
       )}
 
       {/* Modals */}
