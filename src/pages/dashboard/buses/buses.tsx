@@ -5,8 +5,10 @@ import { Bus, NewBusData, BusFilters, OBD2Data } from "./types";
 import { Station } from "../stations/types";
 import { AddBusModal } from "./AddBusModal";
 import { BusDetailsModal } from "./BusDetailsModal";
+import { BusMap } from "./BusMap";
 
 export const Buses: FC = () => {
+  const [activeTab, setActiveTab] = useState<'bus' | 'carte'>('bus');
   const [showAddBusModal, setShowAddBusModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedBus, setSelectedBus] = useState<Bus | null>(null);
@@ -365,216 +367,251 @@ export const Buses: FC = () => {
         </Button>
       </div>
 
-      {/* Filtres */}
-      <div className="bg-white p-4 rounded-lg border border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <Text variant="h4" color={ColorsEnum.TEXT_PRIMARY} className="font-semibold">
-            Filtres
-          </Text>
-          <Button
-            appearance="outline"
-            variation="secondary"
-            size="sm"
-            onClick={resetFilters}
-            iconName="X"
-          >
-            Réinitialiser
-          </Button>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {/* Filtre par statut */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Statut
-            </label>
-            <select
-              value={filters.statut}
-              onChange={(e) => setFilters(prev => ({ ...prev, statut: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Tous les statuts</option>
-              <option value="actif">Actif</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="hors_service">Hors service</option>
-              <option value="en_route">En route</option>
-            </select>
-          </div>
-
-          {/* Filtre par carburant */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Carburant
-            </label>
-            <select
-              value={filters.carburant}
-              onChange={(e) => setFilters(prev => ({ ...prev, carburant: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Tous les carburants</option>
-              <option value="diesel">Diesel</option>
-              <option value="essence">Essence</option>
-              <option value="electrique">Électrique</option>
-              <option value="hybride">Hybride</option>
-            </select>
-          </div>
-
-          {/* Filtre par station */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Station
-            </label>
-            <select
-              value={filters.station}
-              onChange={(e) => setFilters(prev => ({ ...prev, station: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Toutes les stations</option>
-              {stations.map(station => (
-                <option key={station.id} value={station.id}>
-                  {station.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Filtre par état de santé */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              État de santé
-            </label>
-            <select
-              value={filters.etatSante}
-              onChange={(e) => setFilters(prev => ({ ...prev, etatSante: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="">Tous les états</option>
-              <option value="excellent">Excellent (90-100%)</option>
-              <option value="bon">Bon (70-89%)</option>
-              <option value="moyen">Moyen (50-69%)</option>
-              <option value="mauvais">Mauvais (&lt;50%)</option>
-            </select>
-          </div>
-        </div>
+      {/* Onglets */}
+      <div className="flex items-center gap-2 p-1 bg-gray-50 rounded-lg w-fit">
+        <button
+          onClick={() => setActiveTab('bus')}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+            activeTab === 'bus'
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Icon name="List" size={16} />
+          Bus
+        </button>
+        <button
+          onClick={() => setActiveTab('carte')}
+          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-2 ${
+            activeTab === 'carte'
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          <Icon name="Map" size={16} />
+          Carte
+        </button>
       </div>
 
-      {/* Tableau des bus */}
-      <Table
-        dataSource={filteredBuses}
-        columns={[
-          {
-            key: 'numero',
-            title: 'Numéro',
-            sortable: true,
-            render: (value: string, record: Bus) => (
-              <div className="flex items-center space-x-3">
-                <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-                    <Icon name="Bus" size={16} color={ColorsEnum.WHITE} />
-                  </div>
-                </div>
-                <div>
-                  <Text variant="p3" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
-                    {value}
-                  </Text>
-                  <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
-                    {record.plaqueImmatriculation}
-                  </Text>
-                </div>
-              </div>
-            )
-          },
-          {
-            key: 'marque',
-            title: 'Véhicule',
-            sortable: true,
-            render: (value: string, record: Bus) => (
+      {/* Contenu des onglets */}
+      {activeTab === 'bus' ? (
+        <div className="space-y-6">
+          {/* Filtres */}
+          <div className="bg-white p-4 rounded-lg border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <Text variant="h4" color={ColorsEnum.TEXT_PRIMARY} className="font-semibold">
+                Filtres
+              </Text>
+              <Button
+                appearance="outline"
+                variation="secondary"
+                size="sm"
+                onClick={resetFilters}
+                iconName="X"
+              >
+                Réinitialiser
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              {/* Filtre par statut */}
               <div>
-                <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
-                  {value} {record.modele}
-                </Text>
-                <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
-                  {record.annee} • {record.couleur}
-                </Text>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Statut
+                </label>
+                <select
+                  value={filters.statut}
+                  onChange={(e) => setFilters(prev => ({ ...prev, statut: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Tous les statuts</option>
+                  <option value="actif">Actif</option>
+                  <option value="maintenance">Maintenance</option>
+                  <option value="hors_service">Hors service</option>
+                  <option value="en_route">En route</option>
+                </select>
               </div>
-            )
-          },
-          {
-            key: 'capacite',
-            title: 'Capacité',
-            sortable: true,
-            render: (value: number) => (
-              <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
-                {value} places
-              </Text>
-            )
-          },
-          {
-            key: 'carburant',
-            title: 'Carburant',
-            sortable: true,
-            render: (value: Bus['carburant']) => {
-              const { color, text } = getFuelBadgeProps(value);
-              return (
-                <Badge color={color}>
-                  {text}
-                </Badge>
-              );
-            }
-          },
-          {
-            key: 'statut',
-            title: 'Statut',
-            sortable: true,
-            render: (value: Bus['statut']) => {
-              const { color, text } = getStatusBadgeProps(value);
-              return (
-                <Badge color={color}>
-                  {text}
-                </Badge>
-              );
-            }
-          },
-          {
-            key: 'obd2Data',
-            title: 'État de santé',
-            sortable: true,
-            render: (value: Bus['obd2Data']) => (
-              <div className="flex items-center space-x-2">
-                <div className={`w-3 h-3 rounded-full ${
-                  value.scoreEtat >= 90 ? 'bg-green-500' :
-                  value.scoreEtat >= 70 ? 'bg-yellow-500' :
-                  value.scoreEtat >= 50 ? 'bg-orange-500' : 'bg-red-500'
-                }`}></div>
-                <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
-                  {value.scoreEtat}%
-                </Text>
+
+              {/* Filtre par carburant */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Carburant
+                </label>
+                <select
+                  value={filters.carburant}
+                  onChange={(e) => setFilters(prev => ({ ...prev, carburant: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Tous les carburants</option>
+                  <option value="diesel">Diesel</option>
+                  <option value="essence">Essence</option>
+                  <option value="electrique">Électrique</option>
+                  <option value="hybride">Hybride</option>
+                </select>
               </div>
-            )
-          },
-          {
-            key: 'stationName',
-            title: 'Station',
-            render: (value: string) => (
-              <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
-                {value || 'Non assignée'}
-              </Text>
-            )
-          }
-        ]}
-        actions={busActions}
-        rowKey="id"
-        pagination={true}
-        pageSize={10}
-        searchable={true}
-        searchPlaceholder="Rechercher par numéro, plaque ou marque..."
-        striped={true}
-        bordered={true}
-        title="Liste des bus"
-        subtitle={`${filteredBuses.length} bus affichés sur ${buses.length} au total`}
-        onAdd={() => setShowAddBusModal(true)}
-        addButtonText="Ajouter un bus"
-      />
+
+              {/* Filtre par station */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Station
+                </label>
+                <select
+                  value={filters.station}
+                  onChange={(e) => setFilters(prev => ({ ...prev, station: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Toutes les stations</option>
+                  {stations.map(station => (
+                    <option key={station.id} value={station.id}>
+                      {station.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Filtre par état de santé */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  État de santé
+                </label>
+                <select
+                  value={filters.etatSante}
+                  onChange={(e) => setFilters(prev => ({ ...prev, etatSante: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Tous les états</option>
+                  <option value="excellent">Excellent (90-100%)</option>
+                  <option value="bon">Bon (70-89%)</option>
+                  <option value="moyen">Moyen (50-69%)</option>
+                  <option value="mauvais">Mauvais (&lt;50%)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Tableau des bus */}
+          <Table
+            dataSource={filteredBuses}
+            columns={[
+              {
+                key: 'numero',
+                title: 'Numéro',
+                sortable: true,
+                render: (value: string, record: Bus) => (
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <Icon name="Bus" size={16} color={ColorsEnum.WHITE} />
+                      </div>
+                    </div>
+                    <div>
+                      <Text variant="p3" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
+                        {value}
+                      </Text>
+                      <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+                        {record.plaqueImmatriculation}
+                      </Text>
+                    </div>
+                  </div>
+                )
+              },
+              {
+                key: 'marque',
+                title: 'Véhicule',
+                sortable: true,
+                render: (value: string, record: Bus) => (
+                  <div>
+                    <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
+                      {value} {record.modele}
+                    </Text>
+                    <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+                      {record.annee} • {record.couleur}
+                    </Text>
+                  </div>
+                )
+              },
+              {
+                key: 'capacite',
+                title: 'Capacité',
+                sortable: true,
+                render: (value: number) => (
+                  <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
+                    {value} places
+                  </Text>
+                )
+              },
+              {
+                key: 'carburant',
+                title: 'Carburant',
+                sortable: true,
+                render: (value: Bus['carburant']) => {
+                  const { color, text } = getFuelBadgeProps(value);
+                  return (
+                    <Badge color={color}>
+                      {text}
+                    </Badge>
+                  );
+                }
+              },
+              {
+                key: 'statut',
+                title: 'Statut',
+                sortable: true,
+                render: (value: Bus['statut']) => {
+                  const { color, text } = getStatusBadgeProps(value);
+                  return (
+                    <Badge color={color}>
+                      {text}
+                    </Badge>
+                  );
+                }
+              },
+              {
+                key: 'obd2Data',
+                title: 'État de santé',
+                sortable: true,
+                render: (value: Bus['obd2Data']) => (
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-3 h-3 rounded-full ${
+                      value.scoreEtat >= 90 ? 'bg-green-500' :
+                      value.scoreEtat >= 70 ? 'bg-yellow-500' :
+                      value.scoreEtat >= 50 ? 'bg-orange-500' : 'bg-red-500'
+                    }`}></div>
+                    <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
+                      {value.scoreEtat}%
+                    </Text>
+                  </div>
+                )
+              },
+              {
+                key: 'stationName',
+                title: 'Station',
+                render: (value: string) => (
+                  <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
+                    {value || 'Non assignée'}
+                  </Text>
+                )
+              }
+            ]}
+            actions={busActions}
+            rowKey="id"
+            pagination={true}
+            pageSize={10}
+            searchable={true}
+            searchPlaceholder="Rechercher par numéro, plaque ou marque..."
+            striped={true}
+            bordered={true}
+            title="Liste des bus"
+            subtitle={`${filteredBuses.length} bus affichés sur ${buses.length} au total`}
+            onAdd={() => setShowAddBusModal(true)}
+            addButtonText="Ajouter un bus"
+          />
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <BusMap buses={filteredBuses} />
+        </div>
+      )}
 
       {/* Modals */}
       <AddBusModal
