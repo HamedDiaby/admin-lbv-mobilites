@@ -4,6 +4,7 @@ import { ColorsEnum } from '@utils/enums';
 import { usePageInfo } from '../hooks';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { NotificationDrawer } from './NotificationDrawer';
 
 interface HeaderProps {
   isSidebarCollapsed: boolean;
@@ -20,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Fermer le menu quand on clique en dehors
@@ -90,7 +92,10 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Section droite - Actions et profil */}
         <div className="flex items-center space-x-3">
           {/* Notifications */}
-          <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
+          <button 
+            onClick={() => setShowNotificationDrawer(true)}
+            className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          >
             <Icon name="Bell" size={20} color={ColorsEnum.TEXT_SECONDARY} />
             <div className="absolute -top-1 -right-1 w-5 h-5 bg-yellow rounded-full flex items-center justify-center">
               <Text variant="p5" color={ColorsEnum.BLUE_DARK} className="font-semibold">
@@ -145,6 +150,12 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
       </div>
+      
+      {/* Drawer des notifications */}
+      <NotificationDrawer 
+        isOpen={showNotificationDrawer} 
+        onClose={() => setShowNotificationDrawer(false)} 
+      />
     </header>
   );
 };
