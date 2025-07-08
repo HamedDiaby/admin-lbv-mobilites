@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, Navigate } from 'react-router-dom';
 import DashboardRoutes from './dashboardRoutes';
 import AuthRoutes from './authRoutes';
 import { RootLayout } from './layouts/RootLayout';
@@ -14,7 +14,7 @@ const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <DashboardLayout />,
+        element: <Navigate to="/auth/login" replace />,
       },
       {
         path: 'dashboard/*',
