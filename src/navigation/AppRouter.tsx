@@ -10,6 +10,7 @@ import { Dashboard } from '../pages/dashboard/dashboard';
 import { Profile } from '../pages/dashboard/profile';
 import { Users } from '../pages/dashboard/users';
 import { Stations } from '../pages/dashboard/stations';
+import { BusesMinimal as Buses } from '../pages/dashboard/buses/BusesMinimal';
 import { Login } from '../pages/onboarding/login';
 import { ForgotPassword } from '../pages/onboarding/forgotPassword';
 import { CreatePassword } from '../pages/onboarding/createPassword';
@@ -52,6 +53,7 @@ export const AppRouter: React.FC = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="users" element={<Users />} />
           <Route path="stations" element={<Stations />} />
+          <Route path="buses" element={<Buses />} />
         </Route>
         
         {/* Page 404 */}

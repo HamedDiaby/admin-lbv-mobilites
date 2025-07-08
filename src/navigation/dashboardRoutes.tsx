@@ -3,7 +3,7 @@ import { Dashboard } from '../pages/dashboard/dashboard/dashboard';
 import { Profile } from '../pages/dashboard/profile/profile';
 import { Users } from '../pages/dashboard/users/users';
 import { Stations } from '../pages/dashboard/stations/stations';
-import { Buses } from '../pages/dashboard';
+import { BusesMinimal as Buses } from '../pages/dashboard/buses/BusesMinimal';
 
 const DashboardRoutes: RouteObject[] = [
   {
