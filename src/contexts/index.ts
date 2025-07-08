@@ -1,4 +1,4 @@
 // Context Exports
 // Exportez ici tous vos contextes
 
-export {};
+export { AuthProvider, useAuth } from './AuthContext';

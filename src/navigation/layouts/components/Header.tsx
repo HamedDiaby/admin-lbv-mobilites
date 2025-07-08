@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, Icon } from '@components';
 import { ColorsEnum } from '@utils/enums';
 import { usePageInfo } from '../hooks';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   isSidebarCollapsed: boolean;
@@ -15,6 +17,14 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleSidebarCollapse 
 }) => {
   const { title, subtitle } = usePageInfo();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth/login', { replace: true });
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm z-30 relative">
@@ -75,18 +85,36 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Profil utilisateur */}
-          <div className="flex items-center space-x-3 pl-3 border-l border-gray-200">
+          <div className="relative flex items-center space-x-3 pl-3 border-l border-gray-200">
             <div className="hidden sm:block text-right">
               <Text variant="p3" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
-                Admin LBV
+                {user?.email || 'Admin LBV'}
               </Text>
               <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
                 Administrateur
               </Text>
             </div>
-            <div className="w-8 h-8 bg-gradient-to-r from-green to-yellow rounded-full flex items-center justify-center">
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="w-8 h-8 bg-gradient-to-r from-green to-yellow rounded-full flex items-center justify-center hover:from-green-dark hover:to-yellow-dark transition-all duration-200"
+            >
               <Icon name="User" size={16} color={ColorsEnum.WHITE} />
-            </div>
+            </button>
+
+            {/* Menu utilisateur */}
+            {showUserMenu && (
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                <button
+                  onClick={handleLogout}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center transition-colors"
+                >
+                  <Icon name="LogOut" size={16} color={ColorsEnum.TEXT_SECONDARY} />
+                  <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY} className="ml-2">
+                    Se déconnecter
+                  </Text>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

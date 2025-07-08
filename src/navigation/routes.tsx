@@ -5,6 +5,7 @@ import { RootLayout } from './layouts/RootLayout';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import { AuthLayout } from './layouts/AuthLayout';
 import { NotFoundPage } from './components/NotFoundPage';
+import { ProtectedRoute } from '../components/ProtectedRoute';
 
 // Définition des routes principales de l'application
 const routes: RouteObject[] = [
@@ -18,7 +19,11 @@ const routes: RouteObject[] = [
       },
       {
         path: 'dashboard/*',
-        element: <DashboardLayout />,
+        element: (
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        ),
         children: DashboardRoutes,
       },
       {

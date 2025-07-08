@@ -8,3 +8,4 @@ export * from './layouts/AuthLayout';
 export * from './components/NotFoundPage';
 export { default as dashboardRoutes } from './dashboardRoutes';
 export { default as authRoutes } from './authRoutes';
+export { AppRouter } from './AppRouter';
