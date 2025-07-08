@@ -8,6 +8,7 @@ import { AuthLayout } from './layouts/AuthLayout';
 import { NotFoundPage } from './components/NotFoundPage';
 import { Dashboard } from '../pages/dashboard/dashboard';
 import { Profile } from '../pages/dashboard/profile';
+import { Users } from '../pages/dashboard/users';
 import { Login } from '../pages/onboarding/login';
 import { ForgotPassword } from '../pages/onboarding/forgotPassword';
 import { CreatePassword } from '../pages/onboarding/createPassword';
@@ -48,6 +49,7 @@ export const AppRouter: React.FC = () => {
         >
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="users" element={<Users />} />
         </Route>
         
         {/* Page 404 */}
