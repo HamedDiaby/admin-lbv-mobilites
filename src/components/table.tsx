@@ -122,6 +122,10 @@ export interface TableProps<T = any> extends Omit<CardProps, 'children'> {
   onPageChange?: (page: number) => void;
   // Nombre total d'éléments (pour la pagination externe)
   totalItems?: number;
+  // Fonction à appeler pour ajouter un nouvel élément
+  onAdd?: () => void;
+  // Texte du bouton d'ajout
+  addButtonText?: string;
 }
 
 export const Table: FC<TableProps> = ({
@@ -154,6 +158,8 @@ export const Table: FC<TableProps> = ({
   onPageChange,
   totalItems,
   tablePadding = "md",
+  onAdd,
+  addButtonText = "Ajouter",
   // Props du Card
   title,
   subtitle,
@@ -511,12 +517,42 @@ export const Table: FC<TableProps> = ({
       </div>
     );
   };
+  // Construire le rightContent final
+  const finalRightContent = useMemo(() => {
+    const elements = [];
+    
+    if (onAdd) {
+      elements.push(
+        <Button
+          key="add-button"
+          appearance="solid"
+          variation="primary"
+          iconName="Plus"
+          iconPosition="left"
+          onClick={onAdd}
+          size="sm"
+        >
+          {addButtonText}
+        </Button>
+      );
+    }
+    
+    if (rightContent) {
+      elements.push(rightContent);
+    }
+    
+    return elements.length > 0 ? (
+      <div className="flex items-center gap-2">
+        {elements}
+      </div>
+    ) : undefined;
+  }, [onAdd, addButtonText, rightContent]);
   
   return (
     <Card
       title={title}
       subtitle={subtitle}
-      rightContent={rightContent}
+      rightContent={finalRightContent}
       elevation={elevation}
       border={border}
       rounded={rounded}

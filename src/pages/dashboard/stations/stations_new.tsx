@@ -1,0 +1,545 @@
+import { FC, useState } from "react";
+import { Text, Button, Icon, Badge, Table, TableColumn, TableAction } from "@components";
+import { ColorsEnum } from "@utils/enums";
+import { City, Station } from "./types";
+
+export const Stations: FC = () => {
+  const [activeTab, setActiveTab] = useState<'cities' | 'stations'>('cities');
+
+  // Données simulées des villes du Gabon
+  const [cities, setCities] = useState<City[]>([
+    {
+      id: '1',
+      name: 'Libreville',
+      province: 'Estuaire',
+      population: 797003,
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    },
+    {
+      id: '2',
+      name: 'Port-Gentil',
+      province: 'Ogooué-Maritime',
+      population: 136462,
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    },
+    {
+      id: '3',
+      name: 'Franceville',
+      province: 'Haut-Ogooué',
+      population: 110568,
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    },
+    {
+      id: '4',
+      name: 'Oyem',
+      province: 'Woleu-Ntem',
+      population: 60685,
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    },
+    {
+      id: '5',
+      name: 'Moanda',
+      province: 'Haut-Ogooué',
+      population: 42997,
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    }
+  ]);
+
+  // Données simulées des stations
+  const [stations, setStations] = useState<Station[]>([
+    {
+      id: '1',
+      name: 'Gare Routière de Libreville',
+      code: 'LBV-001',
+      cityId: '1',
+      cityName: 'Libreville',
+      address: 'Avenue Bouët, Libreville',
+      type: 'terminal',
+      status: 'active',
+      capacity: 200,
+      facilities: ['Parking', 'Toilettes', 'Boutiques', 'WiFi'],
+      coordinates: { latitude: 0.4162, longitude: 9.4673 },
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    },
+    {
+      id: '2',
+      name: 'Station Akanda',
+      code: 'LBV-002',
+      cityId: '1',
+      cityName: 'Libreville',
+      address: 'Route d\'Akanda, Libreville',
+      type: 'arret',
+      status: 'active',
+      capacity: 50,
+      facilities: ['Abri', 'Éclairage'],
+      coordinates: { latitude: 0.4532, longitude: 9.4241 },
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    },
+    {
+      id: '3',
+      name: 'Terminal Port-Gentil',
+      code: 'PG-001',
+      cityId: '2',
+      cityName: 'Port-Gentil',
+      address: 'Boulevard Bessieux, Port-Gentil',
+      type: 'terminal',
+      status: 'active',
+      capacity: 150,
+      facilities: ['Parking', 'Toilettes', 'Restauration'],
+      coordinates: { latitude: -0.7193, longitude: 8.7815 },
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    },
+    {
+      id: '4',
+      name: 'Dépôt Franceville',
+      code: 'FV-001',
+      cityId: '3',
+      cityName: 'Franceville',
+      address: 'Zone industrielle, Franceville',
+      type: 'depot',
+      status: 'maintenance',
+      capacity: 100,
+      facilities: ['Atelier', 'Parking', 'Carburant'],
+      coordinates: { latitude: -1.6332, longitude: 13.5833 },
+      createdAt: '2024-01-15T09:00:00Z',
+      updatedAt: '2024-01-15T09:00:00Z'
+    }
+  ]);
+
+  // Fonction pour formater une date
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  // Fonction pour formater la population
+  const formatPopulation = (population?: number): string => {
+    if (!population) return 'Non renseigné';
+    return population.toLocaleString('fr-FR');
+  };
+
+  // Fonction pour obtenir la couleur du badge de statut
+  const getStatusBadgeProps = (status: Station['status']) => {
+    switch (status) {
+      case 'active':
+        return { color: ColorsEnum.SUCCESS, text: 'Actif' };
+      case 'inactive':
+        return { color: ColorsEnum.ERROR, text: 'Inactif' };
+      case 'maintenance':
+        return { color: ColorsEnum.WARNING, text: 'Maintenance' };
+      default:
+        return { color: ColorsEnum.TEXT_SECONDARY, text: 'Inconnu' };
+    }
+  };
+
+  // Fonction pour obtenir la couleur du badge de type
+  const getTypeBadgeProps = (type: Station['type']) => {
+    switch (type) {
+      case 'terminal':
+        return { color: ColorsEnum.PRIMARY, text: 'Terminal' };
+      case 'arret':
+        return { color: ColorsEnum.INFO, text: 'Arrêt' };
+      case 'depot':
+        return { color: ColorsEnum.WARNING, text: 'Dépôt' };
+      default:
+        return { color: ColorsEnum.TEXT_SECONDARY, text: 'Inconnu' };
+    }
+  };
+
+  // Actions pour les villes
+  const cityActions: TableAction<City>[] = [
+    {
+      label: 'Voir les stations',
+      icon: 'MapPin',
+      onClick: (city: City) => {
+        setActiveTab('stations');
+        console.log('Voir les stations de:', city.name);
+      },
+      type: 'default'
+    },
+    {
+      label: 'Modifier',
+      icon: 'Edit',
+      onClick: (city: City) => {
+        console.log('Modifier la ville:', city.name);
+      },
+      type: 'primary'
+    },
+    {
+      label: 'Supprimer',
+      icon: 'Trash2',
+      onClick: (city: City) => {
+        console.log('Supprimer la ville:', city.name);
+      },
+      type: 'danger'
+    }
+  ];
+
+  // Actions pour les stations
+  const stationActions: TableAction<Station>[] = [
+    {
+      label: 'Voir le détail',
+      icon: 'Eye',
+      onClick: (station: Station) => {
+        console.log('Voir le détail de:', station.name);
+      },
+      type: 'default'
+    },
+    {
+      label: 'Modifier',
+      icon: 'Edit',
+      onClick: (station: Station) => {
+        console.log('Modifier la station:', station.name);
+      },
+      type: 'primary'
+    },
+    {
+      label: 'Dupliquer',
+      icon: 'Copy',
+      onClick: (station: Station) => {
+        console.log('Dupliquer la station:', station.name);
+      },
+      type: 'success'
+    },
+    {
+      label: 'Désactiver',
+      icon: 'Power',
+      onClick: (station: Station) => {
+        console.log('Désactiver la station:', station.name);
+      },
+      type: 'warning',
+      visible: (station: Station) => station.status === 'active'
+    },
+    {
+      label: 'Activer',
+      icon: 'PowerOff',
+      onClick: (station: Station) => {
+        console.log('Activer la station:', station.name);
+      },
+      type: 'success',
+      visible: (station: Station) => station.status === 'inactive'
+    },
+    {
+      label: 'Supprimer',
+      icon: 'Trash2',
+      onClick: (station: Station) => {
+        console.log('Supprimer la station:', station.name);
+      },
+      type: 'danger'
+    }
+  ];
+
+  // Colonnes pour les villes
+  const cityColumns: TableColumn<City>[] = [
+    {
+      key: 'name',
+      title: 'Nom de la ville',
+      sortable: true,
+      render: (value: string, record: City) => (
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+              <Icon name="MapPin" size={16} color={ColorsEnum.WHITE} />
+            </div>
+          </div>
+          <div>
+            <Text variant="p3" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
+              {value}
+            </Text>
+            <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+              {record.province}
+            </Text>
+          </div>
+        </div>
+      )
+    },
+    {
+      key: 'province',
+      title: 'Province',
+      sortable: true,
+      render: (value: string) => (
+        <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
+          {value}
+        </Text>
+      )
+    },
+    {
+      key: 'population',
+      title: 'Population',
+      sortable: true,
+      render: (value: number) => (
+        <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
+          {formatPopulation(value)}
+        </Text>
+      )
+    },
+    {
+      key: 'stations',
+      title: 'Stations',
+      render: (_, record: City) => {
+        const stationCount = stations.filter(s => s.cityId === record.id).length;
+        return (
+          <Badge color={stationCount > 0 ? ColorsEnum.SUCCESS : ColorsEnum.TEXT_SECONDARY}>
+            {stationCount} station{stationCount > 1 ? 's' : ''}
+          </Badge>
+        );
+      }
+    },
+    {
+      key: 'createdAt',
+      title: 'Créé le',
+      sortable: true,
+      render: (value: string) => (
+        <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY}>
+          {formatDate(value)}
+        </Text>
+      )
+    }
+  ];
+
+  // Colonnes pour les stations
+  const stationColumns: TableColumn<Station>[] = [
+    {
+      key: 'name',
+      title: 'Station',
+      sortable: true,
+      render: (value: string, record: Station) => (
+        <div className="flex items-center space-x-3">
+          <div className="flex-shrink-0">
+            <div className="w-10 h-10 bg-gradient-to-br from-green to-yellow rounded-lg flex items-center justify-center">
+              <Icon name="Bus" size={16} color={ColorsEnum.WHITE} />
+            </div>
+          </div>
+          <div>
+            <Text variant="p3" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
+              {value}
+            </Text>
+            <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+              {record.code}
+            </Text>
+          </div>
+        </div>
+      )
+    },
+    {
+      key: 'cityName',
+      title: 'Ville',
+      sortable: true,
+      render: (value: string) => (
+        <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
+          {value}
+        </Text>
+      )
+    },
+    {
+      key: 'type',
+      title: 'Type',
+      sortable: true,
+      render: (value: Station['type']) => {
+        const { color, text } = getTypeBadgeProps(value);
+        return (
+          <Badge color={color}>
+            {text}
+          </Badge>
+        );
+      }
+    },
+    {
+      key: 'status',
+      title: 'Statut',
+      sortable: true,
+      render: (value: Station['status']) => {
+        const { color, text } = getStatusBadgeProps(value);
+        return (
+          <Badge color={color}>
+            {text}
+          </Badge>
+        );
+      }
+    },
+    {
+      key: 'capacity',
+      title: 'Capacité',
+      sortable: true,
+      render: (value: number) => (
+        <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY}>
+          {value ? `${value} places` : 'Non définie'}
+        </Text>
+      )
+    },
+    {
+      key: 'address',
+      title: 'Adresse',
+      render: (value: string) => (
+        <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY} className="max-w-xs truncate">
+          {value}
+        </Text>
+      )
+    }
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <Text variant="h1" color={ColorsEnum.TEXT_PRIMARY} className="font-bold text-2xl mb-2">
+            Gestion des stations
+          </Text>
+          <Text variant="p3" color={ColorsEnum.TEXT_SECONDARY} className="text-base">
+            Gérez les villes et stations de transport au Gabon
+          </Text>
+        </div>
+        <Button
+          appearance="solid"
+          variation="primary"
+          size="md"
+          iconName={activeTab === 'cities' ? 'MapPin' : 'Plus'}
+          iconPosition="left"
+        >
+          {activeTab === 'cities' ? 'Ajouter une ville' : 'Ajouter une station'}
+        </Button>
+      </div>
+
+      {/* Statistiques */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Icon name="MapPin" size={20} color={ColorsEnum.PRIMARY} />
+            </div>
+            <div className="ml-3">
+              <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+                Villes
+              </Text>
+              <Text variant="h3" color={ColorsEnum.TEXT_PRIMARY} className="font-bold">
+                {cities.length}
+              </Text>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="flex items-center">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <Icon name="Bus" size={20} color={ColorsEnum.SUCCESS} />
+            </div>
+            <div className="ml-3">
+              <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+                Stations
+              </Text>
+              <Text variant="h3" color={ColorsEnum.TEXT_PRIMARY} className="font-bold">
+                {stations.length}
+              </Text>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="flex items-center">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <Icon name="CheckCircle" size={20} color={ColorsEnum.SUCCESS} />
+            </div>
+            <div className="ml-3">
+              <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+                Actives
+              </Text>
+              <Text variant="h3" color={ColorsEnum.TEXT_PRIMARY} className="font-bold">
+                {stations.filter(s => s.status === 'active').length}
+              </Text>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="flex items-center">
+            <div className="p-2 bg-yellow-100 rounded-lg">
+              <Icon name="AlertTriangle" size={20} color={ColorsEnum.WARNING} />
+            </div>
+            <div className="ml-3">
+              <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
+                Maintenance
+              </Text>
+              <Text variant="h3" color={ColorsEnum.TEXT_PRIMARY} className="font-bold">
+                {stations.filter(s => s.status === 'maintenance').length}
+              </Text>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Onglets */}
+      <div className="border-b border-gray-200">
+        <nav className="flex space-x-8">
+          <button
+            onClick={() => setActiveTab('cities')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'cities'
+                ? 'border-green text-green'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <Icon name="MapPin" size={16} className="mr-2 inline" />
+            Villes ({cities.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('stations')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'stations'
+                ? 'border-green text-green'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <Icon name="Bus" size={16} className="mr-2 inline" />
+            Stations ({stations.length})
+          </button>
+        </nav>
+      </div>
+
+      {/* Contenu des onglets */}
+      {activeTab === 'cities' ? (
+        <Table
+          dataSource={cities}
+          columns={cityColumns}
+          actions={cityActions}
+          rowKey="id"
+          pagination={true}
+          pageSize={8}
+          searchable={true}
+          searchPlaceholder="Rechercher par nom de ville ou province..."
+          striped={true}
+          bordered={true}
+          title="Liste des villes"
+          subtitle={`${cities.length} villes au Gabon`}
+        />
+      ) : (
+        <Table
+          dataSource={stations}
+          columns={stationColumns}
+          actions={stationActions}
+          rowKey="id"
+          pagination={true}
+          pageSize={8}
+          searchable={true}
+          searchPlaceholder="Rechercher par nom de station, ville ou code..."
+          striped={true}
+          bordered={true}
+          title="Liste des stations"
+          subtitle={`${stations.length} stations dans ${cities.length} villes`}
+        />
+      )}
+    </div>
+  );
+};
