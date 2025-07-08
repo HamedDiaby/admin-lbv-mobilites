@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Text, Icon } from '@components';
 import { ColorsEnum } from '@utils/enums';
 import { usePageInfo } from '../hooks';
@@ -20,6 +20,21 @@ export const Header: React.FC<HeaderProps> = ({
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Fermer le menu quand on clique en dehors
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -85,13 +100,13 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           {/* Profil utilisateur */}
-          <div className="relative flex items-center space-x-3 pl-3 border-l border-gray-200">
+          <div className="relative flex items-center space-x-3 pl-3 border-l border-gray-200" ref={menuRef}>
             <div className="hidden sm:block text-right">
               <Text variant="p3" color={ColorsEnum.TEXT_PRIMARY} className="font-medium">
-                {user?.email || 'Admin LBV'}
+                {user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : user?.email || 'Admin LBV'}
               </Text>
               <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
-                Administrateur
+                {user?.role || 'Administrateur'}
               </Text>
             </div>
             <button
@@ -104,6 +119,18 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Menu utilisateur */}
             {showUserMenu && (
               <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                <button
+                  onClick={() => {
+                    navigate('/dashboard/profile');
+                    setShowUserMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center transition-colors"
+                >
+                  <Icon name="User" size={16} color={ColorsEnum.TEXT_SECONDARY} />
+                  <Text variant="p4" color={ColorsEnum.TEXT_PRIMARY} className="ml-2">
+                    Mon profil
+                  </Text>
+                </button>
                 <button
                   onClick={handleLogout}
                   className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center transition-colors"

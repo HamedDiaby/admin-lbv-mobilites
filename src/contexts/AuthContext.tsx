@@ -1,8 +1,17 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
+interface User {
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  role?: string;
+  department?: string;
+  lastLogin?: string;
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: { email: string } | null;
+  user: User | null;
   login: (email: string, rememberMe: boolean) => void;
   logout: () => void;
   isLoading: boolean;
@@ -24,7 +33,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{ email: string } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +44,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (authStatus === 'true' && userEmail) {
         setIsAuthenticated(true);
-        setUser({ email: userEmail });
+        setUser({ 
+          email: userEmail,
+          firstName: "Admin",
+          lastName: "LBV",
+          role: "Administrateur",
+          department: "Administration",
+          lastLogin: new Date().toLocaleString('fr-FR')
+        });
       }
       
       setIsLoading(false);
@@ -46,7 +62,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = (email: string, rememberMe: boolean) => {
     setIsAuthenticated(true);
-    setUser({ email });
+    setUser({ 
+      email,
+      firstName: "Admin",
+      lastName: "LBV",
+      role: "Administrateur",
+      department: "Administration",
+      lastLogin: new Date().toLocaleString('fr-FR')
+    });
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('userEmail', email);
     

@@ -18,7 +18,7 @@ const routes: RouteObject[] = [
         element: <Navigate to="/auth/login" replace />,
       },
       {
-        path: 'dashboard/*',
+        path: 'dashboard',
         element: (
           <ProtectedRoute>
             <DashboardLayout />
