@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { Text, Button, Icon, Badge, Table, TableColumn, TableAction } from "@components";
 import { ColorsEnum } from "@utils/enums";
+import { AddUserModal, NewUserData } from "./AddUserModal";
 
 // Interface pour les données utilisateur
 interface User {
@@ -18,7 +19,7 @@ interface User {
 
 export const Users: FC = () => {
   // Données simulées des utilisateurs
-  const [users] = useState<User[]>([
+  const [users, setUsers] = useState<User[]>([
     {
       id: '1',
       firstName: 'Admin',
@@ -109,6 +110,9 @@ export const Users: FC = () => {
     }
   ]);
 
+  // État pour la modal d'ajout d'utilisateur
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   // Fonction pour formater une date
   const formatDate = (dateString: string): string => {
     if (dateString === 'Jamais connecté') return dateString;
@@ -151,6 +155,27 @@ export const Users: FC = () => {
       default:
         return ColorsEnum.TEXT_SECONDARY;
     }
+  };
+
+  // Fonction pour ajouter un nouvel utilisateur
+  const handleAddUser = (userData: NewUserData) => {
+    // Générer un nouvel ID (dans un vrai projet, ce serait fait par l'API)
+    const newId = (users.length + 1).toString();
+    
+    const newUser: User = {
+      id: newId,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      role: userData.role,
+      department: userData.department,
+      status: 'active',
+      lastLogin: 'Jamais connecté',
+      createdAt: new Date().toISOString()
+    };
+
+    setUsers(prev => [...prev, newUser]);
+    console.log('Nouvel utilisateur ajouté:', newUser);
   };
 
   // Actions pour chaque ligne
@@ -302,6 +327,7 @@ export const Users: FC = () => {
           size="md"
           iconName="UserPlus"
           iconPosition="left"
+          onClick={() => setIsAddModalOpen(true)}
         >
           Ajouter un utilisateur
         </Button>
@@ -388,6 +414,13 @@ export const Users: FC = () => {
         bordered={true}
         title="Liste des utilisateurs"
         subtitle={`${users.length} utilisateurs au total`}
+      />
+
+      {/* Modal d'ajout d'utilisateur */}
+      <AddUserModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={handleAddUser}
       />
     </div>
   );
