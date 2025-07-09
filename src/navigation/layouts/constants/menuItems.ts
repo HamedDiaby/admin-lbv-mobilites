@@ -26,6 +26,11 @@ export const MENU_ITEMS: MenuItem[] = [
     path: "/dashboard/stations"
   },
   {
+    icon: "Route",
+    text: "Lignes",
+    path: "/dashboard/lignes"
+  },
+  {
     icon: "Bus",
     text: "Bus",
     path: "/dashboard/buses"

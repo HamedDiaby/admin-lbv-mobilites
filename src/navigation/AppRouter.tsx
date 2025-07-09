@@ -10,6 +10,7 @@ import { Dashboard } from '../pages/dashboard/dashboard';
 import { Profile } from '../pages/dashboard/profile';
 import { Users } from '../pages/dashboard/users';
 import { Stations } from '../pages/dashboard/stations';
+import { Lignes } from '../pages/dashboard/lignes';
 import { Buses } from '../pages/dashboard/buses';
 import { Login } from '../pages/onboarding/login';
 import { ForgotPassword } from '../pages/onboarding/forgotPassword';
@@ -53,6 +54,7 @@ export const AppRouter: React.FC = () => {
           <Route path="profile" element={<Profile />} />
           <Route path="users" element={<Users />} />
           <Route path="stations" element={<Stations />} />
+          <Route path="lignes" element={<Lignes />} />
           <Route path="buses" element={<Buses />} />
         </Route>
         
