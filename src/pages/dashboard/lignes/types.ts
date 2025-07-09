@@ -10,7 +10,11 @@ export interface StationIntermediaire {
 export interface Ligne {
   id: string;
   nom: string;
-  ville: string;
+  numero: string; // Numéro de ligne (ex: "L01", "L02")
+  ville: {
+    id: string;
+    nom: string;
+  };
   stationDepart: {
     id: string;
     nom: string;
@@ -22,7 +26,7 @@ export interface Ligne {
   distanceTotale: number; // en km
   tempsTotal: number; // en minutes
   stationsIntermediaires: StationIntermediaire[];
-  statut: 'active' | 'inactive' | 'maintenance';
+  statut: 'Active' | 'Inactive' | 'Maintenance';
   dateCreation: string;
   dateMiseAJour: string;
 }
@@ -39,6 +43,10 @@ export interface Station {
 export interface Ville {
   id: string;
   nom: string;
+  coordonnees: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface LigneFormData {

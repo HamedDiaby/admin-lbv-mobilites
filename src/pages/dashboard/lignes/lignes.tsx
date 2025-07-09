@@ -7,14 +7,15 @@ import { Icon } from "../../../components/icon";
 import { ColorsEnum } from "../../../utils/enums";
 import { AddLigneModal } from "./AddLigneModal";
 import { Ligne, Station, LigneFormData, Ville } from "./types";
+import LignesMap from "./LignesMap";
 
 // Données simulées pour les villes
 const mockVilles: Ville[] = [
-  { id: "1", nom: "Libreville" },
-  { id: "2", nom: "Port-Gentil" },
-  { id: "3", nom: "Franceville" },
-  { id: "4", nom: "Oyem" },
-  { id: "5", nom: "Moanda" }
+  { id: "1", nom: "Libreville", coordonnees: { lat: 0.4162, lng: 9.4673 } },
+  { id: "2", nom: "Port-Gentil", coordonnees: { lat: -0.7193, lng: 8.7815 } },
+  { id: "3", nom: "Franceville", coordonnees: { lat: -1.6333, lng: 13.5833 } },
+  { id: "4", nom: "Oyem", coordonnees: { lat: 1.5993, lng: 11.5804 } },
+  { id: "5", nom: "Moanda", coordonnees: { lat: -1.5667, lng: 13.2167 } }
 ];
 
 // Données simulées pour les stations
@@ -34,7 +35,8 @@ const mockLignes: Ligne[] = [
   {
     id: "1",
     nom: "Ligne A",
-    ville: "Libreville",
+    numero: "L01",
+    ville: { id: "1", nom: "Libreville" },
     stationDepart: { id: "1", nom: "Gare Routière" },
     stationArrivee: { id: "2", nom: "Aéroport" },
     distanceTotale: 15.5,
@@ -57,14 +59,15 @@ const mockLignes: Ligne[] = [
         tempsDepuisStation: 12
       }
     ],
-    statut: "active",
+    statut: "Active",
     dateCreation: "2024-01-15",
     dateMiseAJour: "2024-12-01"
   },
   {
     id: "2",
     nom: "Ligne B",
-    ville: "Libreville",
+    numero: "L02",
+    ville: { id: "1", nom: "Libreville" },
     stationDepart: { id: "3", nom: "Université" },
     stationArrivee: { id: "6", nom: "Port Autonome" },
     distanceTotale: 12.8,
@@ -79,20 +82,21 @@ const mockLignes: Ligne[] = [
         tempsDepuisStation: 15
       }
     ],
-    statut: "active",
+    statut: "Active",
     dateCreation: "2024-02-10",
     dateMiseAJour: "2024-11-15"
   },
   {
     id: "3",
     nom: "Ligne C",
-    ville: "Libreville",
+    numero: "L03",
+    ville: { id: "1", nom: "Libreville" },
     stationDepart: { id: "1", nom: "Gare Routière" },
     stationArrivee: { id: "8", nom: "Centre Commercial" },
     distanceTotale: 8.2,
     tempsTotal: 25,
     stationsIntermediaires: [],
-    statut: "maintenance",
+    statut: "Maintenance",
     dateCreation: "2024-03-05",
     dateMiseAJour: "2024-12-07"
   }
@@ -102,6 +106,7 @@ export const Lignes: FC = () => {
   const [lignes, setLignes] = useState<Ligne[]>(mockLignes);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingLigne, setEditingLigne] = useState<Ligne | null>(null);
+  const [currentView, setCurrentView] = useState<'table' | 'map'>('table');
 
   // Colonnes du tableau
   const columns: TableColumn<Ligne>[] = [
@@ -116,7 +121,7 @@ export const Lignes: FC = () => {
               {value}
             </Text>
             <Text variant="p5" color={ColorsEnum.TEXT_SECONDARY}>
-              {record.ville}
+              {record.ville.nom}
             </Text>
           </div>
         </div>
@@ -150,7 +155,7 @@ export const Lignes: FC = () => {
           )}
           
           <div className="flex items-center space-x-2">
-            <Icon name="Circle" size={8} color={ColorsEnum.ERROR} />
+            <Icon name="Square" size={8} color={ColorsEnum.ERROR} />
             <Text variant="p4" className="font-medium">
               {record.stationArrivee.nom}
             </Text>
@@ -159,91 +164,61 @@ export const Lignes: FC = () => {
       )
     },
     {
-      key: "distance",
-      title: "Distance & Temps",
-      render: (_, record) => (
-        <div className="space-y-1">
-          <div className="flex items-center space-x-1">
-            <Icon name="MapPin" size={14} color={ColorsEnum.TEXT_SECONDARY} />
-            <Text variant="p4" className="font-medium">
-              {record.distanceTotale} km
-            </Text>
-          </div>
-          <div className="flex items-center space-x-1">
-            <Icon name="Clock" size={14} color={ColorsEnum.TEXT_SECONDARY} />
-            <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY}>
-              {record.tempsTotal} min
-            </Text>
-          </div>
+      key: "distanceTotale",
+      title: "Distance",
+      render: (value) => (
+        <div className="text-center">
+          <Text variant="p3" className="font-medium">
+            {value} km
+          </Text>
         </div>
       ),
-      align: "center",
       sortable: true
     },
     {
-      key: "stationsCount",
-      title: "Stations",
-      render: (_, record) => (
+      key: "tempsTotal",
+      title: "Temps",
+      render: (value) => (
         <div className="text-center">
-          <Badge
-            variant="outline"
-            color={ColorsEnum.PRIMARY}
-            size="sm"
-          >
-            {`${record.stationsIntermediaires.length + 2} stations`}
-          </Badge>
+          <Text variant="p3" className="font-medium">
+            {value} min
+          </Text>
         </div>
       ),
-      align: "center"
+      sortable: true
     },
     {
       key: "statut",
       title: "Statut",
       render: (value) => {
-        const getBadgeProps = (statut: string) => {
+        const getStatutColor = (statut: string) => {
           switch (statut) {
-            case "active":
-              return {
-                children: "Active",
-                color: ColorsEnum.SUCCESS,
-                variant: "solid" as const
-              };
-            case "inactive":
-              return {
-                children: "Inactive",
-                color: ColorsEnum.WARNING,
-                variant: "solid" as const
-              };
-            case "maintenance":
-              return {
-                children: "Maintenance",
-                color: ColorsEnum.ERROR,
-                variant: "solid" as const
-              };
+            case 'Active':
+              return ColorsEnum.SUCCESS;
+            case 'Inactive':
+              return ColorsEnum.WARNING;
+            case 'Maintenance':
+              return ColorsEnum.ERROR;
             default:
-              return {
-                children: statut,
-                color: ColorsEnum.TEXT_SECONDARY,
-                variant: "outline" as const
-              };
+              return ColorsEnum.TEXT_SECONDARY;
           }
         };
 
-        const badgeProps = getBadgeProps(value);
-        
         return (
           <Badge
-            {...badgeProps}
-            size="sm"
-          />
+            variant="outline"
+            color={getStatutColor(value)}
+            className="capitalize"
+          >
+            {value}
+          </Badge>
         );
       },
-      align: "center",
       sortable: true
     },
     {
-      key: "dateMiseAJour",
-      title: "Dernière MAJ",
+      key: "dateCreation",
+      title: "Créée le",
       render: (value) => (
         <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY}>
           {new Date(value).toLocaleDateString('fr-FR')}
@@ -253,37 +228,26 @@ export const Lignes: FC = () => {
     }
   ];
 
-  // Actions sur les lignes
+  // Actions du tableau
   const actions: TableAction<Ligne>[] = [
     {
-      label: "Voir détails",
-      icon: "Eye",
-      onClick: (ligne) => {
-        console.log("Voir détails ligne:", ligne);
-        // Logique pour afficher les détails
-      },
-      type: "default"
-    },
-    {
       label: "Modifier",
-      icon: "Edit2",
+      icon: "Edit",
       onClick: (ligne) => {
         setEditingLigne(ligne);
         setIsAddModalOpen(true);
-      },
-      type: "primary"
+      }
     },
     {
-      label: "Activer/Désactiver",
-      icon: "Power",
-      onClick: (ligne: Ligne) => {
+      label: "Basculer statut",
+      icon: "Pause" as const,
+      onClick: (ligne) => {
         setLignes(prev => prev.map(l => 
           l.id === ligne.id 
-            ? { ...l, statut: l.statut === 'active' ? 'inactive' : 'active' }
+            ? { ...l, statut: l.statut === 'Active' ? 'Inactive' : 'Active' }
             : l
         ));
-      },
-      type: "warning"
+      }
     },
     {
       label: "Supprimer",
@@ -301,9 +265,10 @@ export const Lignes: FC = () => {
   const handleAddLigne = async (data: LigneFormData) => {
     const stationDepart = mockStations.find(s => s.id === data.stationDepartId);
     const stationArrivee = mockStations.find(s => s.id === data.stationArriveeId);
+    const villeObj = mockVilles.find(v => v.id === data.ville);
     
-    if (!stationDepart || !stationArrivee) {
-      throw new Error("Stations non trouvées");
+    if (!stationDepart || !stationArrivee || !villeObj) {
+      throw new Error("Stations ou ville non trouvées");
     }
 
     // Calculer la distance et le temps total
@@ -322,7 +287,7 @@ export const Lignes: FC = () => {
           ? {
               ...ligne,
               nom: data.nom,
-              ville: data.ville,
+              ville: villeObj,
               stationDepart: { id: stationDepart.id, nom: stationDepart.nom },
               stationArrivee: { id: stationArrivee.id, nom: stationArrivee.nom },
               stationsIntermediaires: data.stationsIntermediaires.map((si, index) => ({
@@ -340,7 +305,8 @@ export const Lignes: FC = () => {
       const newLigne: Ligne = {
         id: `ligne_${Date.now()}`,
         nom: data.nom,
-        ville: data.ville,
+        numero: `L${String(lignes.length + 1).padStart(2, '0')}`,
+        ville: villeObj,
         stationDepart: { id: stationDepart.id, nom: stationDepart.nom },
         stationArrivee: { id: stationArrivee.id, nom: stationArrivee.nom },
         stationsIntermediaires: data.stationsIntermediaires.map((si, index) => ({
@@ -349,7 +315,7 @@ export const Lignes: FC = () => {
         })),
         distanceTotale,
         tempsTotal,
-        statut: "active",
+        statut: "Active",
         dateCreation: new Date().toISOString().split('T')[0],
         dateMiseAJour: new Date().toISOString().split('T')[0]
       };
@@ -369,9 +335,9 @@ export const Lignes: FC = () => {
   // Statistiques rapides
   const stats = useMemo(() => {
     const totalLignes = lignes.length;
-    const lignesActives = lignes.filter(l => l.statut === 'active').length;
-    const lignesInactives = lignes.filter(l => l.statut === 'inactive').length;
-    const lignesMaintenance = lignes.filter(l => l.statut === 'maintenance').length;
+    const lignesActives = lignes.filter(l => l.statut === 'Active').length;
+    const lignesInactives = lignes.filter(l => l.statut === 'Inactive').length;
+    const lignesMaintenance = lignes.filter(l => l.statut === 'Maintenance').length;
     const distanceTotale = lignes.reduce((sum, l) => sum + l.distanceTotale, 0);
 
     return {
@@ -423,9 +389,9 @@ export const Lignes: FC = () => {
               </div>
               <div>
                 <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY}>
-                  Actives
+                  Lignes actives
                 </Text>
-                <Text variant="h3" className="font-bold text-success">
+                <Text variant="h3" className="font-bold">
                   {stats.lignesActives}
                 </Text>
               </div>
@@ -435,13 +401,13 @@ export const Lignes: FC = () => {
           <div className="bg-white border border-border rounded-lg p-4">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-warning/10 rounded-lg">
-                <Icon name="PauseCircle" size={20} color={ColorsEnum.WARNING} />
+                <Icon name="Pause" size={20} color={ColorsEnum.WARNING} />
               </div>
               <div>
                 <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY}>
-                  Inactives
+                  Lignes inactives
                 </Text>
-                <Text variant="h3" className="font-bold text-warning">
+                <Text variant="h3" className="font-bold">
                   {stats.lignesInactives}
                 </Text>
               </div>
@@ -450,14 +416,14 @@ export const Lignes: FC = () => {
 
           <div className="bg-white border border-border rounded-lg p-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-error/10 rounded-lg">
+              <div className="p-2 bg-danger/10 rounded-lg">
                 <Icon name="AlertTriangle" size={20} color={ColorsEnum.ERROR} />
               </div>
               <div>
                 <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY}>
-                  Maintenance
+                  En maintenance
                 </Text>
-                <Text variant="h3" className="font-bold text-error">
+                <Text variant="h3" className="font-bold">
                   {stats.lignesMaintenance}
                 </Text>
               </div>
@@ -466,8 +432,8 @@ export const Lignes: FC = () => {
 
           <div className="bg-white border border-border rounded-lg p-4">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Icon name="MapPin" size={20} color={ColorsEnum.PRIMARY} />
+              <div className="p-2 bg-info/10 rounded-lg">
+                <Icon name="MapPin" size={20} color={ColorsEnum.INFO} />
               </div>
               <div>
                 <Text variant="p4" color={ColorsEnum.TEXT_SECONDARY}>
@@ -482,29 +448,66 @@ export const Lignes: FC = () => {
         </div>
       </div>
 
-      {/* Tableau des lignes */}
-      <Table
-        title="Liste des lignes"
-        dataSource={lignes}
-        columns={columns}
-        actions={actions}
-        onAdd={() => setIsAddModalOpen(true)}
-        addButtonText="Nouvelle ligne"
-        pagination
-        pageSize={10}
-        striped
-        searchable
-        searchPlaceholder="Rechercher une ligne..."
-      />
+      {/* Contrôles de vue et actions */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <Button
+            appearance={currentView === 'table' ? 'solid' : 'outline'}
+            variation={currentView === 'table' ? 'primary' : 'primary'}
+            size="sm"
+            onClick={() => setCurrentView('table')}
+            className="flex items-center space-x-2"
+          >
+            <Icon name="List" size={16} />
+            <span>Liste</span>
+          </Button>
+          <Button
+            appearance={currentView === 'map' ? 'solid' : 'outline'}
+            variation={currentView === 'map' ? 'primary' : 'primary'}
+            size="sm"
+            onClick={() => setCurrentView('map')}
+            className="flex items-center space-x-2"
+          >
+            <Icon name="Map" size={16} />
+            <span>Carte</span>
+          </Button>
+        </div>
+
+        <Button
+          appearance="solid"
+          variation="primary"
+          onClick={() => setIsAddModalOpen(true)}
+          className="flex items-center space-x-2"
+        >
+          <Icon name="Plus" size={16} />
+          <span>Ajouter une ligne</span>
+        </Button>
+      </div>
+
+      {/* Contenu principal */}
+      {currentView === 'table' ? (
+        <div className="bg-white border border-border rounded-lg">
+          <Table
+            columns={columns}
+            dataSource={lignes}
+            actions={actions}
+            emptyText="Aucune ligne trouvée"
+          />
+        </div>
+      ) : (
+        <div className="bg-white border border-border rounded-lg p-4">
+          <LignesMap lignes={lignes} />
+        </div>
+      )}
 
       {/* Modal d'ajout/modification */}
       <AddLigneModal
         isOpen={isAddModalOpen}
         onClose={handleCloseModal}
         onSubmit={handleAddLigne}
+        editingLigne={editingLigne}
         stations={mockStations}
         villes={mockVilles}
-        editingLigne={editingLigne}
       />
     </div>
   );

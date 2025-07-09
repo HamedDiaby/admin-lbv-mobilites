@@ -41,7 +41,7 @@ export const AddLigneModal: FC<AddLigneModalProps> = ({
     if (editingLigne && isOpen) {
       setFormData({
         nom: editingLigne.nom,
-        ville: editingLigne.ville,
+        ville: editingLigne.ville.id,
         stationDepartId: editingLigne.stationDepart.id,
         stationArriveeId: editingLigne.stationArrivee.id,
         stationsIntermediaires: editingLigne.stationsIntermediaires.map(si => ({

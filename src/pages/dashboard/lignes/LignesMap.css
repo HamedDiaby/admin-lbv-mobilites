@@ -1,0 +1,212 @@
+.lignes-map-container {
+  height: 600px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.ligne-popup {
+  max-width: 280px;
+}
+
+.ligne-popup h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.ligne-popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ligne-popup-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.ligne-popup-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ligne-popup-label {
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.ligne-popup-value {
+  color: #111827;
+}
+
+.ligne-popup-stations {
+  background: #f9fafb;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.ligne-popup-station {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  margin: 2px 0;
+}
+
+.station-marker {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.station-depart {
+  background-color: #10b981;
+}
+
+.station-intermediaire {
+  background-color: #6b7280;
+}
+
+.station-arrivee {
+  background-color: #ef4444;
+}
+
+.filter-controls {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.ville-filter {
+  min-width: 200px;
+}
+
+.statut-filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.statut-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.statut-checkbox input[type="checkbox"] {
+  margin: 0;
+}
+
+.legend {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  margin-top: 12px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.legend-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.ligne-active {
+  background-color: #3b82f6;
+}
+
+.ligne-inactive {
+  background-color: #f59e0b;
+}
+
+.ligne-maintenance {
+  background-color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .lignes-map-container {
+    height: 500px;
+  }
+  
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  
+  .ville-filter {
+    min-width: auto;
+  }
+  
+  .statut-filters {
+    justify-content: center;
+  }
+  
+  .legend-items {
+    justify-content: center;
+  }
+}
