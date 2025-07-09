@@ -15,24 +15,27 @@ L.Icon.Default.mergeOptions({
 
 // Icônes personnalisées pour les stations
 const createStationIcon = (type: 'depart' | 'intermediaire' | 'arrivee') => {
-  const colors = {
-    depart: '#10b981',
-    intermediaire: '#6b7280',
-    arrivee: '#ef4444'
+  const config = {
+    depart: { color: '#10b981', size: 14 },
+    intermediaire: { color: '#6b7280', size: 10 },
+    arrivee: { color: '#ef4444', size: 14 }
   };
+  
+  const { color, size } = config[type];
   
   return L.divIcon({
     className: 'custom-station-marker',
     html: `<div style="
-      width: 12px;
-      height: 12px;
+      width: ${size}px;
+      height: ${size}px;
       border-radius: 50%;
-      background-color: ${colors[type]};
+      background-color: ${color};
       border: 2px solid white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      position: relative;
     "></div>`,
-    iconSize: [16, 16],
-    iconAnchor: [8, 8]
+    iconSize: [size + 4, size + 4],
+    iconAnchor: [(size + 4) / 2, (size + 4) / 2]
   });
 };
 
@@ -91,18 +94,26 @@ const LignesMap: React.FC<LignesMapProps> = ({ lignes }) => {
     // Station de départ
     coordinates.push([baseLat, baseLng]);
     
-    // Stations intermédiaires
+    // Stations intermédiaires - réparties le long du trajet
+    const totalStations = ligne.stationsIntermediaires.length + 2; // +2 pour départ et arrivée
     ligne.stationsIntermediaires.forEach((_, index) => {
-      const offset = (index + 1) * 0.005; // 0.005 degrés de décalage
-      const angle = (index * 60) * (Math.PI / 180); // Répartition circulaire
-      const newLat = baseLat + Math.cos(angle) * offset;
-      const newLng = baseLng + Math.sin(angle) * offset;
+      const progression = (index + 1) / (totalStations - 1); // Progression de 0 à 1
+      const latOffset = progression * 0.02; // Décalage progressif sur 0.02 degrés
+      const lngOffset = progression * 0.015; // Décalage progressif sur 0.015 degrés
+      
+      // Ajouter une petite variation aléatoire pour éviter l'alignement parfait
+      const randomLat = (Math.random() - 0.5) * 0.003;
+      const randomLng = (Math.random() - 0.5) * 0.003;
+      
+      const newLat = baseLat + latOffset + randomLat;
+      const newLng = baseLng + lngOffset + randomLng;
       coordinates.push([newLat, newLng]);
     });
     
     // Station d'arrivée
-    const finalOffset = 0.01;
-    coordinates.push([baseLat + finalOffset, baseLng + finalOffset]);
+    const finalLat = baseLat + 0.025;
+    const finalLng = baseLng + 0.02;
+    coordinates.push([finalLat, finalLng]);
     
     return coordinates;
   };
@@ -248,15 +259,31 @@ const LignesMap: React.FC<LignesMapProps> = ({ lignes }) => {
                             
                             {ligne.stationsIntermediaires.length > 0 && (
                               <div className="ligne-popup-stations">
-                                <div style={{ fontWeight: 600, marginBottom: 4, fontSize: 12 }}>
-                                  Stations intermédiaires:
+                                <div style={{ fontWeight: 600, marginBottom: 6, fontSize: 12 }}>
+                                  Stations intermédiaires ({ligne.stationsIntermediaires.length}):
                                 </div>
-                                {ligne.stationsIntermediaires.map((station, idx) => (
+                                {ligne.stationsIntermediaires
+                                  .sort((a, b) => a.ordre - b.ordre)
+                                  .map((station, idx) => (
                                   <div key={idx} className="ligne-popup-station">
                                     <div className="station-marker station-intermediaire"></div>
-                                    <span>{station.nomStation}</span>
+                                    <span style={{ fontWeight: 500 }}>{station.nomStation}</span>
+                                    <span style={{ color: '#6b7280', fontSize: '11px' }}>
+                                      ({station.distanceDepuisStation}km, {station.tempsDepuisStation}min)
+                                    </span>
                                   </div>
                                 ))}
+                              </div>
+                            )}
+                            
+                            {stationType === 'intermediaire' && (
+                              <div style={{ marginTop: 8, padding: 6, backgroundColor: '#f3f4f6', borderRadius: 4 }}>
+                                <div style={{ fontSize: 11, color: '#6b7280' }}>
+                                  Distance depuis station précédente: {ligne.stationsIntermediaires[index - 1]?.distanceDepuisStation || 0} km
+                                </div>
+                                <div style={{ fontSize: 11, color: '#6b7280' }}>
+                                  Temps depuis station précédente: {ligne.stationsIntermediaires[index - 1]?.tempsDepuisStation || 0} min
+                                </div>
                               </div>
                             )}
                           </div>
@@ -273,19 +300,38 @@ const LignesMap: React.FC<LignesMapProps> = ({ lignes }) => {
 
       {/* Légende */}
       <div className="legend">
-        <div className="legend-title">Légende des lignes</div>
+        <div className="legend-title">Légende</div>
         <div className="legend-items">
-          <div className="legend-item">
-            <div className="legend-color ligne-active"></div>
-            <span>Ligne Active</span>
+          <div className="legend-section">
+            <div className="legend-section-title">Statut des lignes</div>
+            <div className="legend-item">
+              <div className="legend-color ligne-active"></div>
+              <span>Ligne Active</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-color ligne-inactive"></div>
+              <span>Ligne Inactive</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-color ligne-maintenance"></div>
+              <span>Ligne en Maintenance</span>
+            </div>
           </div>
-          <div className="legend-item">
-            <div className="legend-color ligne-inactive"></div>
-            <span>Ligne Inactive</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-color ligne-maintenance"></div>
-            <span>Ligne en Maintenance</span>
+          
+          <div className="legend-section">
+            <div className="legend-section-title">Types de stations</div>
+            <div className="legend-item">
+              <div className="legend-station-marker" style={{ backgroundColor: '#10b981', width: '12px', height: '12px' }}></div>
+              <span>Station de départ</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-station-marker" style={{ backgroundColor: '#6b7280', width: '8px', height: '8px' }}></div>
+              <span>Station intermédiaire</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-station-marker" style={{ backgroundColor: '#ef4444', width: '12px', height: '12px' }}></div>
+              <span>Station d'arrivée</span>
+            </div>
           </div>
         </div>
       </div>

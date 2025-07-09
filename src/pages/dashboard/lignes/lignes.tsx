@@ -99,6 +99,100 @@ const mockLignes: Ligne[] = [
     statut: "Maintenance",
     dateCreation: "2024-03-05",
     dateMiseAJour: "2024-12-07"
+  },
+  {
+    id: "4",
+    nom: "Ligne Express",
+    numero: "L04",
+    ville: { id: "1", nom: "Libreville" },
+    stationDepart: { id: "1", nom: "Gare Routière" },
+    stationArrivee: { id: "2", nom: "Aéroport" },
+    distanceTotale: 22.5,
+    tempsTotal: 65,
+    stationsIntermediaires: [
+      {
+        id: "si4",
+        stationId: "3",
+        nomStation: "Université",
+        ordre: 1,
+        distanceDepuisStation: 4.5,
+        tempsDepuisStation: 12
+      },
+      {
+        id: "si5",
+        stationId: "4",
+        nomStation: "Marché du Mont-Bouët",
+        ordre: 2,
+        distanceDepuisStation: 3.8,
+        tempsDepuisStation: 10
+      },
+      {
+        id: "si6",
+        stationId: "5",
+        nomStation: "Hôpital Central",
+        ordre: 3,
+        distanceDepuisStation: 2.9,
+        tempsDepuisStation: 8
+      },
+      {
+        id: "si7",
+        stationId: "6",
+        nomStation: "Port Autonome",
+        ordre: 4,
+        distanceDepuisStation: 5.2,
+        tempsDepuisStation: 15
+      },
+      {
+        id: "si8",
+        stationId: "7",
+        nomStation: "Stade Omar Bongo",
+        ordre: 5,
+        distanceDepuisStation: 6.1,
+        tempsDepuisStation: 20
+      }
+    ],
+    statut: "Active",
+    dateCreation: "2024-04-12",
+    dateMiseAJour: "2024-12-08"
+  },
+  {
+    id: "5",
+    nom: "Ligne Rapide",
+    numero: "L05",
+    ville: { id: "2", nom: "Port-Gentil" },
+    stationDepart: { id: "1", nom: "Centre-ville PG" },
+    stationArrivee: { id: "2", nom: "Zone Industrielle" },
+    distanceTotale: 18.7,
+    tempsTotal: 50,
+    stationsIntermediaires: [
+      {
+        id: "si9",
+        stationId: "3",
+        nomStation: "Marché Central PG",
+        ordre: 1,
+        distanceDepuisStation: 6.2,
+        tempsDepuisStation: 18
+      },
+      {
+        id: "si10",
+        stationId: "4",
+        nomStation: "Hôpital de Port-Gentil",
+        ordre: 2,
+        distanceDepuisStation: 4.8,
+        tempsDepuisStation: 14
+      },
+      {
+        id: "si11",
+        stationId: "5",
+        nomStation: "Port Pétrolier",
+        ordre: 3,
+        distanceDepuisStation: 7.7,
+        tempsDepuisStation: 18
+      }
+    ],
+    statut: "Inactive",
+    dateCreation: "2024-05-20",
+    dateMiseAJour: "2024-11-30"
   }
 ];
 
