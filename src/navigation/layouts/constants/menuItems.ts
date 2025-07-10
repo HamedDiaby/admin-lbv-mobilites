@@ -41,6 +41,11 @@ export const MENU_ITEMS: MenuItem[] = [
     path: "/dashboard/planning"
   },
   {
+    icon: "CreditCard",
+    text: "Abonnements",
+    path: "/dashboard/abonnements"
+  },
+  {
     icon: "Users",
     text: "Clients",
     path: "/dashboard/clients"

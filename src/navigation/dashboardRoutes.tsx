@@ -6,6 +6,7 @@ import { Stations } from '../pages/dashboard/stations/stations';
 import { Lignes } from '../pages/dashboard/lignes/lignes';
 import { BusesMinimal as Buses } from '../pages/dashboard/buses/BusesMinimal';
 import { Planning } from '../pages/dashboard/planning/planning';
+import { Abonnements } from '../pages/dashboard/abonnements/abonnements';
 
 const DashboardRoutes: RouteObject[] = [
   {
@@ -35,6 +36,10 @@ const DashboardRoutes: RouteObject[] = [
   {
     path: 'planning',
     element: <Planning />,
+  },
+  {
+    path: 'abonnements',
+    element: <Abonnements />,
   }
 ];
 

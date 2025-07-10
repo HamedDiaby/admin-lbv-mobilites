@@ -64,16 +64,50 @@ export const Badge: FC<BadgeProps> = ({
 
   // Couleurs en fonction de la variante et de la couleur de base
   const getColorClasses = () => {
-    switch (variant) {
-      case "solid":
-        return `bg-${color} text-white`;
-      case "outline":
-        return `bg-transparent text-${color} border border-${color}`;
-      case "soft":
-        return `bg-${color}/20 text-${color}`;
-      default:
-        return `bg-${color} text-white`;
-    }
+    // Mappage direct des couleurs avec fallback
+    const colorMap: Record<string, Record<string, string>> = {
+      [ColorsEnum.PRIMARY]: {
+        solid: 'bg-blue-500 text-white',
+        outline: 'bg-transparent text-blue-500 border border-blue-500',
+        soft: 'bg-blue-50 text-blue-600'
+      },
+      [ColorsEnum.SUCCESS]: {
+        solid: 'bg-green-500 text-white',
+        outline: 'bg-transparent text-green-500 border border-green-500',
+        soft: 'bg-green-50 text-green-600'
+      },
+      [ColorsEnum.WARNING]: {
+        solid: 'bg-yellow-500 text-white',
+        outline: 'bg-transparent text-yellow-500 border border-yellow-500',
+        soft: 'bg-yellow-50 text-yellow-600'
+      },
+      [ColorsEnum.ERROR]: {
+        solid: 'bg-red-500 text-white',
+        outline: 'bg-transparent text-red-500 border border-red-500',
+        soft: 'bg-red-50 text-red-600'
+      },
+      [ColorsEnum.INFO_LIGHT]: {
+        solid: 'bg-blue-400 text-white',
+        outline: 'bg-transparent text-blue-400 border border-blue-400',
+        soft: 'bg-blue-50 text-blue-500'
+      },
+      [ColorsEnum.GRAY_500]: {
+        solid: 'bg-gray-500 text-white',
+        outline: 'bg-transparent text-gray-500 border border-gray-500',
+        soft: 'bg-gray-50 text-gray-600'
+      }
+    };
+
+    const defaultColors = {
+      solid: 'bg-gray-500 text-white',
+      outline: 'bg-transparent text-gray-500 border border-gray-500',
+      soft: 'bg-gray-50 text-gray-600'
+    };
+
+    const colorKey = String(color);
+    const colorVariants = colorMap[colorKey] || defaultColors;
+    
+    return colorVariants[variant] || colorVariants.solid;
   };
 
   // Tailles en fonction de la prop size
@@ -103,12 +137,12 @@ export const Badge: FC<BadgeProps> = ({
     // Classes de forme
     rounded ? "rounded-full" : "rounded",
     // Classes de bordure
-    bordered && !variant.includes("outline") ? "border border-white/20" : "",
+    bordered && variant !== "outline" ? "border border-white/20" : "",
     // Classes pour l'effet de clic
     clickable ? "cursor-pointer hover:opacity-80 active:opacity-70 transition-opacity" : "",
     // Classes supplémentaires
     className,
-  ].join(" ");
+  ].filter(Boolean).join(" ");
 
   // Si c'est juste un point, on ne montre pas de contenu
   if (dot) {
