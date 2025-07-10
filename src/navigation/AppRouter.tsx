@@ -12,6 +12,7 @@ import { Users } from '../pages/dashboard/users';
 import { Stations } from '../pages/dashboard/stations';
 import { Lignes } from '../pages/dashboard/lignes';
 import { Buses } from '../pages/dashboard/buses';
+import { Planning } from '../pages/dashboard/planning';
 import { Login } from '../pages/onboarding/login';
 import { ForgotPassword } from '../pages/onboarding/forgotPassword';
 import { CreatePassword } from '../pages/onboarding/createPassword';
@@ -56,6 +57,7 @@ export const AppRouter: React.FC = () => {
           <Route path="stations" element={<Stations />} />
           <Route path="lignes" element={<Lignes />} />
           <Route path="buses" element={<Buses />} />
+          <Route path="planning" element={<Planning />} />
         </Route>
         
         {/* Page 404 */}
