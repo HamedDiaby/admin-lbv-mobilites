@@ -3,11 +3,16 @@ import { Text, Button, Card, Badge, Icon } from '@components';
 import { ColorsEnum } from '@utils/enums';
 import { Abonnement, NewAbonnementData } from './types';
 import { AddAbonnementModal } from './AddAbonnementModal';
+import { AbonnementDetailsModal } from './AbonnementDetailsModal';
+import { EditAbonnementModal } from './EditAbonnementModal';
 
 export const AbonnementsSimple: React.FC = () => {
   const [abonnements, setAbonnements] = useState<Abonnement[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedAbonnement, setSelectedAbonnement] = useState<Abonnement | null>(null);
 
   // Données simulées d'abonnements
   const mockAbonnements: Abonnement[] = [
@@ -181,6 +186,33 @@ export const AbonnementsSimple: React.FC = () => {
   const handleAddAbonnement = (newAbonnement: Abonnement) => {
     setAbonnements(prev => [...prev, newAbonnement]);
     setShowAddModal(false);
+  };
+
+  const handleEditAbonnement = (updatedAbonnement: Abonnement) => {
+    setAbonnements(prev => 
+      prev.map(abonnement => 
+        abonnement.id === updatedAbonnement.id ? updatedAbonnement : abonnement
+      )
+    );
+    setShowEditModal(false);
+    setShowDetailsModal(false);
+    setSelectedAbonnement(null);
+  };
+
+  const handleDeleteAbonnement = (id: string) => {
+    setAbonnements(prev => prev.filter(abonnement => abonnement.id !== id));
+    setShowDetailsModal(false);
+    setSelectedAbonnement(null);
+  };
+
+  const openDetailsModal = (abonnement: Abonnement) => {
+    setSelectedAbonnement(abonnement);
+    setShowDetailsModal(true);
+  };
+
+  const openEditModal = (abonnement: Abonnement) => {
+    setSelectedAbonnement(abonnement);
+    setShowEditModal(true);
   };
 
   if (loading) {
@@ -373,6 +405,7 @@ export const AbonnementsSimple: React.FC = () => {
                 size="sm"
                 iconName="Eye"
                 className="flex-1"
+                onClick={() => openDetailsModal(abonnement)}
               >
                 Voir
               </Button>
@@ -382,6 +415,7 @@ export const AbonnementsSimple: React.FC = () => {
                 size="sm"
                 iconName="Edit"
                 className="flex-1"
+                onClick={() => openEditModal(abonnement)}
               >
                 Modifier
               </Button>
@@ -396,6 +430,33 @@ export const AbonnementsSimple: React.FC = () => {
         onClose={() => setShowAddModal(false)}
         onSubmit={handleAddAbonnement}
       />
+
+      {/* Modal de détails d'abonnement */}
+      {selectedAbonnement && (
+        <AbonnementDetailsModal
+          isOpen={showDetailsModal}
+          onClose={() => {
+            setShowDetailsModal(false);
+            setSelectedAbonnement(null);
+          }}
+          abonnement={selectedAbonnement}
+          onEdit={handleEditAbonnement}
+          onDelete={handleDeleteAbonnement}
+        />
+      )}
+
+      {/* Modal d'édition d'abonnement */}
+      {selectedAbonnement && (
+        <EditAbonnementModal
+          isOpen={showEditModal}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedAbonnement(null);
+          }}
+          abonnement={selectedAbonnement}
+          onSubmit={handleEditAbonnement}
+        />
+      )}
     </div>
   );
 };

@@ -24,27 +24,27 @@ export const AbonnementDetailsModal: React.FC<AbonnementDetailsModalProps> = ({
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR', {
       style: 'currency',
-      currency: 'XOF',
+      currency: 'XAF',
       minimumFractionDigits: 0,
     }).format(price);
   };
 
   const getStatusBadgeColor = (statut: string) => {
     switch (statut) {
-      case 'actif': return 'bg-green-100 text-green-800';
-      case 'inactif': return 'bg-red-100 text-red-800';
-      case 'brouillon': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'actif': return ColorsEnum.SUCCESS;
+      case 'inactif': return ColorsEnum.ERROR;
+      case 'brouillon': return ColorsEnum.WARNING;
+      default: return ColorsEnum.GRAY_500;
     }
   };
 
   const getTypeBadgeColor = (type: string) => {
     switch (type) {
-      case 'mensuel': return 'bg-blue-100 text-blue-800';
-      case 'hebdomadaire': return 'bg-green-100 text-green-800';
-      case 'journalier': return 'bg-purple-100 text-purple-800';
-      case 'annuel': return 'bg-indigo-100 text-indigo-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'mensuel': return ColorsEnum.PRIMARY;
+      case 'hebdomadaire': return ColorsEnum.SUCCESS;
+      case 'journalier': return ColorsEnum.WARNING;
+      case 'annuel': return ColorsEnum.INFO_LIGHT;
+      default: return ColorsEnum.GRAY_500;
     }
   };
 
@@ -104,14 +104,14 @@ export const AbonnementDetailsModal: React.FC<AbonnementDetailsModalProps> = ({
             <div className="flex items-center space-x-2 mt-1">
               <Badge 
                 variant="solid"
-                className={getStatusBadgeColor(abonnement.statut)}
+                color={getStatusBadgeColor(abonnement.statut)}
                 iconName={abonnement.statut === 'actif' ? 'CheckCircle' : abonnement.statut === 'inactif' ? 'XCircle' : 'Clock'}
               >
                 {abonnement.statut.charAt(0).toUpperCase() + abonnement.statut.slice(1)}
               </Badge>
               <Badge 
                 variant="soft"
-                className={getTypeBadgeColor(abonnement.typeAbonnement)}
+                color={getTypeBadgeColor(abonnement.typeAbonnement)}
                 iconName="Calendar"
               >
                 {abonnement.typeAbonnement.charAt(0).toUpperCase() + abonnement.typeAbonnement.slice(1)}
