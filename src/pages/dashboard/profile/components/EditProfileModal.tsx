@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
-import { Text, Button, Input, Icon, Modal } from "@components";
-import { ColorsEnum } from "@utils/enums";
-import { useAuth } from "@contexts";
+import { Text, Button, Input, Icon, Modal } from "../../../../components";
+import { ColorsEnum } from "../../../../utils/enums";
+import { useAuth } from "../../../../contexts";
 
 interface EditProfileModalProps {
   isOpen: boolean;

@@ -1,2 +1,1 @@
-export { Profile } from './profile';
-export { EditProfileModal } from './EditProfileModal';
+export { Profile, default } from './profile';
