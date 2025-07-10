@@ -15,6 +15,7 @@ import { Buses } from '../pages/dashboard/buses';
 import { Planning } from '../pages/dashboard/planning';
 import { Abonnements } from '../pages/dashboard/abonnements';
 import { Clients } from '../pages/dashboard/clients';
+import Analytics from '../pages/dashboard/analytics/analytics';
 import { Login } from '../pages/onboarding/login';
 import { ForgotPassword } from '../pages/onboarding/forgotPassword';
 import { CreatePassword } from '../pages/onboarding/createPassword';
@@ -54,6 +55,7 @@ export const AppRouter: React.FC = () => {
           }
         >
           <Route index element={<Dashboard />} />
+          <Route path="analytics" element={<Analytics />} />
           <Route path="profile" element={<Profile />} />
           <Route path="users" element={<Users />} />
           <Route path="stations" element={<Stations />} />
