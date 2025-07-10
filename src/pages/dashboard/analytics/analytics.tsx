@@ -4,7 +4,8 @@ import { Button } from '../../../components/button';
 import { Text } from '../../../components/text';
 import { Badge } from '../../../components/badge';
 import { AnalyticsData } from './types';
-import ChartsModal from './ChartsModal';
+import ChartsModalAdvanced from './ChartsModalAdvanced';
+import MiniChart from './MiniChart';
 
 // Données de simulation
 const generateMockData = (): AnalyticsData => {
@@ -184,23 +185,23 @@ const Analytics: React.FC = () => {
             <option value="365">12 derniers mois</option>
           </select>
           
-          <Button label="Exporter" appearance="solid" variation="primary" size="sm" iconName="Download" />
-          
           <Button 
             label="Voir les graphiques" 
-            appearance="outline" 
-            variation="primary" 
+            appearance="solid" 
+            variation="success" 
             size="sm" 
             iconName="BarChart2"
             onClick={() => setShowChartsModal(true)}
           />
+          
+          <Button label="Exporter" appearance="outline" variation="primary" size="sm" iconName="Download" />
         </div>
       </div>
 
       {/* KPIs Principaux */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card className="p-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <Text variant="p3" className="text-gray-500 font-medium">
                 Revenus Total
@@ -219,10 +220,13 @@ const Analytics: React.FC = () => {
               <span className="text-blue-600 text-2xl">💰</span>
             </div>
           </div>
+          <div className="mt-4">
+            <MiniChart data={data} type="revenue" height={60} />
+          </div>
         </Card>
 
         <Card className="p-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <Text variant="p3" className="text-gray-500 font-medium">
                 Voyages
@@ -241,10 +245,13 @@ const Analytics: React.FC = () => {
               <span className="text-green-600 text-2xl">🚌</span>
             </div>
           </div>
+          <div className="mt-4">
+            <MiniChart data={data} type="trips" height={60} />
+          </div>
         </Card>
 
         <Card className="p-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <Text variant="p3" className="text-gray-500 font-medium">
                 Utilisateurs
@@ -262,6 +269,9 @@ const Analytics: React.FC = () => {
             <div className="bg-purple-100 p-3 rounded-lg">
               <span className="text-purple-600 text-2xl">👥</span>
             </div>
+          </div>
+          <div className="mt-4">
+            <MiniChart data={data} type="users" height={60} />
           </div>
         </Card>
 
@@ -464,10 +474,86 @@ const Analytics: React.FC = () => {
           ))}
         </div>
       </Card>
+
+      {/* Aperçu Graphiques */}
+      <Card className="p-6">
+        <div className="flex justify-between items-center mb-6">
+          <Text variant="h3" className="text-gray-900 font-semibold">
+            Visualisations Graphiques
+          </Text>
+          <Button 
+            label="Voir tous les graphiques" 
+            appearance="solid" 
+            variation="primary" 
+            size="sm" 
+            iconName="BarChart2"
+            onClick={() => setShowChartsModal(true)}
+          />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border border-blue-200">
+            <div className="flex items-center mb-4">
+              <div className="bg-blue-500 p-2 rounded-lg mr-3">
+                <span className="text-white text-xl">📈</span>
+              </div>
+              <div>
+                <Text variant="h4" className="text-blue-900 font-semibold">
+                  Revenus & Évolution
+                </Text>
+                <Text variant="p4" className="text-blue-700">
+                  Tendances temporelles
+                </Text>
+              </div>
+            </div>
+            <Text variant="p3" className="text-blue-800">
+              Analysez l'évolution des revenus sur 30 jours avec les détails par source (abonnements vs tickets).
+            </Text>
+          </div>
+
+          <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-lg border border-green-200">
+            <div className="flex items-center mb-4">
+              <div className="bg-green-500 p-2 rounded-lg mr-3">
+                <span className="text-white text-xl">🚌</span>
+              </div>
+              <div>
+                <Text variant="h4" className="text-green-900 font-semibold">
+                  Performance & Utilisation
+                </Text>
+                <Text variant="p4" className="text-green-700">
+                  Efficacité opérationnelle
+                </Text>
+              </div>
+            </div>
+            <Text variant="p3" className="text-green-800">
+              Visualisez les performances par ligne et l'utilisation des bus avec des indicateurs de maintenance.
+            </Text>
+          </div>
+
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg border border-purple-200">
+            <div className="flex items-center mb-4">
+              <div className="bg-purple-500 p-2 rounded-lg mr-3">
+                <span className="text-white text-xl">👥</span>
+              </div>
+              <div>
+                <Text variant="h4" className="text-purple-900 font-semibold">
+                  Démographie
+                </Text>
+                <Text variant="p4" className="text-purple-700">
+                  Profil utilisateurs
+                </Text>
+              </div>
+            </div>
+            <Text variant="p3" className="text-purple-800">
+              Explorez la répartition des utilisateurs par tranche d'âge et leurs habitudes d'utilisation.
+            </Text>
+          </div>
+        </div>
+      </Card>
       
       {/* Modal de graphiques */}
       {data && (
-        <ChartsModal 
+        <ChartsModalAdvanced 
           isOpen={showChartsModal} 
           onClose={() => setShowChartsModal(false)} 
           data={data} 
