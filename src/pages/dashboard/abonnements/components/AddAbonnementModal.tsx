@@ -1,28 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { Text, Button, Modal } from '@components';
-import { ColorsEnum } from '@utils/enums';
-import { Abonnement, AbonnementFormErrors } from './types';
+import React, { useState } from 'react';
+import { Text, Button, Input, Card, Select, Modal } from '../../../../components';
+import { ColorsEnum } from '../../../../utils/enums';
+import { Abonnement, NewAbonnementData, AbonnementFormErrors } from '../types';
 
-interface EditAbonnementModalProps {
+interface AddAbonnementModalProps {
   isOpen: boolean;
   onClose: () => void;
-  abonnement: Abonnement;
   onSubmit: (abonnement: Abonnement) => void;
 }
 
-export const EditAbonnementModal: React.FC<EditAbonnementModalProps> = ({
+export const AddAbonnementModal: React.FC<AddAbonnementModalProps> = ({
   isOpen,
   onClose,
-  abonnement,
   onSubmit,
 }) => {
-  const [formData, setFormData] = useState<Abonnement>(abonnement);
+  const [formData, setFormData] = useState<NewAbonnementData>({
+    nom: '',
+    description: '',
+    prix: 0,
+    duree: 30,
+    typeAbonnement: 'mensuel',
+    avantages: [],
+    nombreTrajet: -1,
+    lignesIncluses: [],
+    heuresValidite: { debut: '05:00', fin: '23:00' },
+    joursValidite: [],
+    couleur: '#3B82F6',
+    icone: 'Calendar',
+    conditions: '',
+    reduction: { type: 'aucune', valeur: 0, description: '' },
+  });
+
   const [errors, setErrors] = useState<AbonnementFormErrors>({});
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setFormData(abonnement);
-  }, [abonnement]);
 
   const validateForm = (): boolean => {
     const newErrors: AbonnementFormErrors = {};
@@ -60,21 +70,24 @@ export const EditAbonnementModal: React.FC<EditAbonnementModalProps> = ({
       // Simulation d'une requête API
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      const updatedAbonnement: Abonnement = {
+      const newAbonnement: Abonnement = {
+        id: Date.now().toString(),
         ...formData,
+        statut: 'brouillon',
+        createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        createdBy: 'admin1', // À remplacer par l'ID de l'utilisateur connecté
       };
 
-      onSubmit(updatedAbonnement);
-      onClose();
+      onSubmit(newAbonnement);
     } catch (error) {
-      console.error('Erreur lors de la modification de l\'abonnement:', error);
+      console.error('Erreur lors de la création de l\'abonnement:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleInputChange = (field: keyof Abonnement, value: any) => {
+  const handleInputChange = (field: keyof NewAbonnementData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
     // Supprimer l'erreur pour ce champ si elle existe
@@ -89,7 +102,7 @@ export const EditAbonnementModal: React.FC<EditAbonnementModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Modifier l'abonnement"
+      title="Créer un nouvel abonnement"
       size="xl"
       maxHeight="90vh"
     >
@@ -100,24 +113,16 @@ export const EditAbonnementModal: React.FC<EditAbonnementModalProps> = ({
             Informations générales
           </Text>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nom de l'abonnement *
-              </label>
-              <input
-                type="text"
-                value={formData.nom}
-                onChange={(e) => handleInputChange('nom', e.target.value)}
-                placeholder="Ex: Abonnement Mensuel Standard"
-                required
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-              />
-              {errors.nom && (
-                <Text variant="p3" color={ColorsEnum.ERROR} className="mt-1">
-                  {errors.nom}
-                </Text>
-              )}
-            </div>
+            <Input
+              type="text"
+              label="Nom de l'abonnement"
+              value={formData.nom}
+              onChange={(e) => handleInputChange('nom', e.target.value)}
+              placeholder="Ex: Abonnement Mensuel Standard"
+              required
+              error={errors.nom}
+              fullWidth
+            />
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -218,28 +223,12 @@ export const EditAbonnementModal: React.FC<EditAbonnementModalProps> = ({
           </div>
         </div>
 
-        {/* Statut */}
+        {/* Personnalisation */}
         <div>
           <Text variant="h4" color={ColorsEnum.TEXT_PRIMARY} className="mb-4">
-            Statut et personnalisation
+            Personnalisation
           </Text>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Statut *
-              </label>
-              <select
-                value={formData.statut}
-                onChange={(e) => handleInputChange('statut', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-                required
-              >
-                <option value="brouillon">Brouillon</option>
-                <option value="actif">Actif</option>
-                <option value="inactif">Inactif</option>
-              </select>
-            </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Couleur d'affichage
@@ -251,28 +240,28 @@ export const EditAbonnementModal: React.FC<EditAbonnementModalProps> = ({
                   onChange={(e) => handleInputChange('couleur', e.target.value)}
                   className="w-12 h-10 border border-gray-300 rounded-md cursor-pointer"
                 />
-                <input
+                <Input
                   type="text"
                   value={formData.couleur}
                   onChange={(e) => handleInputChange('couleur', e.target.value)}
                   placeholder="#3B82F6"
-                  className="flex-1 border border-gray-300 rounded-md px-3 py-2"
+                  className="flex-1"
                 />
               </div>
             </div>
-          </div>
 
-          <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Conditions d'utilisation
-            </label>
-            <textarea
-              value={formData.conditions}
-              onChange={(e) => handleInputChange('conditions', e.target.value)}
-              placeholder="Conditions spécifiques à cet abonnement"
-              rows={2}
-              className="w-full border border-gray-300 rounded-md px-3 py-2"
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Conditions d'utilisation
+              </label>
+              <textarea
+                value={formData.conditions}
+                onChange={(e) => handleInputChange('conditions', e.target.value)}
+                placeholder="Conditions spécifiques à cet abonnement"
+                rows={2}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              />
+            </div>
           </div>
         </div>
 
@@ -292,9 +281,9 @@ export const EditAbonnementModal: React.FC<EditAbonnementModalProps> = ({
             variation="primary"
             htmlType="submit"
             loading={loading}
-            iconName="Save"
+            iconName="Plus"
           >
-            Enregistrer les modifications
+            Créer l'abonnement
           </Button>
         </div>
       </form>

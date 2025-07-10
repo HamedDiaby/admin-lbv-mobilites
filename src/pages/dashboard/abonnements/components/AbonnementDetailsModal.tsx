@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Text, Button, Badge, Card, Modal, Icon } from '@components';
-import { ColorsEnum } from '@utils/enums';
-import { Abonnement } from './types';
+import { Text, Button, Badge, Card, Modal, Icon } from '../../../../components';
+import { ColorsEnum } from '../../../../utils/enums';
+import { Abonnement } from '../types';
 
 interface AbonnementDetailsModalProps {
   isOpen: boolean;
