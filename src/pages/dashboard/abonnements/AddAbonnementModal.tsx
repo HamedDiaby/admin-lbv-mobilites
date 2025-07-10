@@ -144,17 +144,22 @@ export const AddAbonnementModal: React.FC<AddAbonnementModalProps> = ({
           </div>
 
           <div className="mt-4">
-            <Input
-              type="textarea"
-              label="Description"
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Description *
+            </label>
+            <textarea
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
               placeholder="Description détaillée de l'abonnement"
               required
-              error={errors.description}
               rows={3}
-              fullWidth
+              className="w-full border border-gray-300 rounded-md px-3 py-2"
             />
+            {errors.description && (
+              <Text variant="p3" color={ColorsEnum.ERROR} className="mt-1">
+                {errors.description}
+              </Text>
+            )}
           </div>
         </div>
 
@@ -164,19 +169,23 @@ export const AddAbonnementModal: React.FC<AddAbonnementModalProps> = ({
             Configuration
           </Text>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Select
-              label="Type d'abonnement"
-              options={[
-                { value: 'journalier', label: 'Journalier' },
-                { value: 'hebdomadaire', label: 'Hebdomadaire' },
-                { value: 'mensuel', label: 'Mensuel' },
-                { value: 'annuel', label: 'Annuel' },
-                { value: 'personnalise', label: 'Personnalisé' }
-              ]}
-              value={formData.typeAbonnement}
-              onChange={(e) => handleInputChange('typeAbonnement', e.target.value)}
-              fullWidth
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Type d'abonnement *
+              </label>
+              <select
+                value={formData.typeAbonnement}
+                onChange={(e) => handleInputChange('typeAbonnement', e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+                required
+              >
+                <option value="journalier">Journalier</option>
+                <option value="hebdomadaire">Hebdomadaire</option>
+                <option value="mensuel">Mensuel</option>
+                <option value="annuel">Annuel</option>
+                <option value="personnalise">Personnalisé</option>
+              </select>
+            </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -241,15 +250,18 @@ export const AddAbonnementModal: React.FC<AddAbonnementModalProps> = ({
               </div>
             </div>
 
-            <Input
-              type="textarea"
-              label="Conditions d'utilisation"
-              value={formData.conditions}
-              onChange={(e) => handleInputChange('conditions', e.target.value)}
-              placeholder="Conditions spécifiques à cet abonnement"
-              rows={2}
-              fullWidth
-            />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Conditions d'utilisation
+              </label>
+              <textarea
+                value={formData.conditions}
+                onChange={(e) => handleInputChange('conditions', e.target.value)}
+                placeholder="Conditions spécifiques à cet abonnement"
+                rows={2}
+                className="w-full border border-gray-300 rounded-md px-3 py-2"
+              />
+            </div>
           </div>
         </div>
 

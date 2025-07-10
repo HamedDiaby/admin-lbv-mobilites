@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Button, Card, Badge, Icon } from '@components';
 import { ColorsEnum } from '@utils/enums';
-import { Abonnement } from './types';
+import { Abonnement, NewAbonnementData } from './types';
+import { AddAbonnementModal } from './AddAbonnementModal';
 
 export const AbonnementsSimple: React.FC = () => {
   const [abonnements, setAbonnements] = useState<Abonnement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   // Données simulées d'abonnements
   const mockAbonnements: Abonnement[] = [
@@ -176,6 +178,11 @@ export const AbonnementsSimple: React.FC = () => {
     }
   };
 
+  const handleAddAbonnement = (newAbonnement: Abonnement) => {
+    setAbonnements(prev => [...prev, newAbonnement]);
+    setShowAddModal(false);
+  };
+
   if (loading) {
     return (
       <div className="p-6">
@@ -207,6 +214,7 @@ export const AbonnementsSimple: React.FC = () => {
           variation="primary"
           size="md"
           iconName="Plus"
+          onClick={() => setShowAddModal(true)}
         >
           Nouvel abonnement
         </Button>
@@ -381,6 +389,13 @@ export const AbonnementsSimple: React.FC = () => {
           </Card>
         ))}
       </div>
+
+      {/* Modal d'ajout d'abonnement */}
+      <AddAbonnementModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSubmit={handleAddAbonnement}
+      />
     </div>
   );
 };
