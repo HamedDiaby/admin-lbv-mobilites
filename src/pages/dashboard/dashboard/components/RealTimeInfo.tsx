@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '../../../../components/card';
-import { Badge } from '../../../../components/badge';
-import { Icon } from '../../../../components/icon';
-import { Button } from '../../../../components/button';
+import { Card, Badge, Icon, Button } from '@components';
+import { ColorsEnum } from '@utils/enums';
 import { BusPosition, Station } from '../types';
-import { ColorsEnum } from '../../../../utils/enums';
 
 interface RealTimeInfoProps {
   selectedBus: BusPosition | null;

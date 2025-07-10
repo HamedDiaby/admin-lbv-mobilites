@@ -6,13 +6,10 @@ import {
   RealTimeInfo,
   PerformanceMetrics
 } from './components';
-import { Card } from '../../../components/card';
-import { Button } from '../../../components/button';
-import { Icon } from '../../../components/icon';
-import { Badge } from '../../../components/badge';
+import { Card, Button, Icon, Badge } from '@components';
+import { ColorsEnum } from '@utils/enums';
 import { useRealTimeData, useMapState } from './hooks';
 import { filterBuses, calculatePerformanceMetrics } from './utils';
-import { ColorsEnum } from '../../../utils/enums';
 import './Dashboard.css';
 
 export const Dashboard: React.FC = () => {

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '../../../../components/card';
-import { Badge } from '../../../../components/badge';
-import { Icon } from '../../../../components/icon';
+import { Card, Badge, Icon } from '@components';
+import { ColorsEnum } from '@utils/enums';
 import { BusPosition } from '../types';
-import { ColorsEnum } from '../../../../utils/enums';
 
 interface PerformanceMetricsProps {
   buses: BusPosition[];

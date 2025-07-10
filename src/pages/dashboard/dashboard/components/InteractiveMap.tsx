@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
+import { Card, Button, Badge, Switch, Select, Icon } from '@components';
+import { ColorsEnum } from '@utils/enums';
 import { BusPosition, Station, Ligne, MapFilter, Incident } from '../types';
-import { Card } from '../../../../components/card';
-import { Button } from '../../../../components/button';
-import { Badge } from '../../../../components/badge';
-import { Switch } from '../../../../components/switch';
-import { Select } from '../../../../components/select';
-import { Icon } from '../../../../components/icon';
-import { ColorsEnum } from '../../../../utils/enums';
 import 'leaflet/dist/leaflet.css';
 
 interface InteractiveMapProps {
