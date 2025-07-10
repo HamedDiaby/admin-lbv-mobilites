@@ -1,0 +1,186 @@
+/* Styles personnalisés pour la sidebar */
+
+/* Animation smooth pour les catégories */
+.category-items {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-items.expanded {
+  max-height: 500px;
+  opacity: 1;
+}
+
+.category-items.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Scrollbar personnalisée pour la navigation */
+nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+nav::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+nav::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Animation pour les éléments de menu */
+.sidebar-item {
+  transition: all 0.2s ease-in-out;
+}
+
+.sidebar-item:hover {
+  transform: translateX(4px);
+}
+
+.sidebar-item.active {
+  transform: scale(1.02);
+}
+
+/* Effet de lueur pour les éléments actifs */
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, #fbbf24, #f59e0b);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Animation pour les icônes */
+.sidebar-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.sidebar-item:hover .sidebar-icon {
+  transform: scale(1.1);
+}
+
+/* Styles pour le mode collapsed */
+.sidebar-collapsed .category-header {
+  display: none;
+}
+
+.sidebar-collapsed .sidebar-item {
+  margin-left: 0;
+  padding: 0.5rem;
+}
+
+/* Tooltips pour le mode collapsed */
+.sidebar-tooltip {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 1000;
+  margin-left: 0.5rem;
+}
+
+.sidebar-item:hover .sidebar-tooltip {
+  opacity: 1;
+}
+
+/* Animation d'entrée pour les éléments */
+.sidebar-item {
+  animation: slideInFromLeft 0.3s ease-out;
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Styles pour les séparateurs de catégories */
+.category-separator {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  margin: 1rem 0;
+}
+
+/* Effet hover pour les en-têtes de catégories */
+.category-header:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Animation pour les chevrons */
+.category-chevron {
+  transition: transform 0.2s ease-in-out;
+}
+
+.category-header.expanded .category-chevron {
+  transform: rotate(90deg);
+}
+
+/* Styles pour l'indicateur de statut système */
+.system-status {
+  position: relative;
+  overflow: hidden;
+}
+
+.system-status::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #10b981, #3b82f6, #8b5cf6, #10b981);
+  border-radius: 0.5rem;
+  opacity: 0.3;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .sidebar-item {
+    padding: 0.75rem;
+  }
+  
+  .sidebar-item:hover {
+    transform: translateX(2px);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .sidebar-tooltip {
+    background: rgba(255, 255, 255, 0.9);
+    color: #1f2937;
+  }
+}
