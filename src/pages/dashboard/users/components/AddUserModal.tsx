@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
-import { Text, Button, Input, Select, Modal } from "@components";
-import { ColorsEnum } from "@utils/enums";
+import { Text, Button, Input, Select, Modal } from "../../../../components";
+import { ColorsEnum } from "../../../../utils/enums";
 
 interface AddUserModalProps {
   isOpen: boolean;
