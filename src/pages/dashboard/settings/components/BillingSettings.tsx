@@ -1,11 +1,11 @@
 import React from 'react';
-import { Card } from '../../../components/card';
-import { Button } from '../../../components/button';
-import { Text } from '../../../components/text';
-import { Badge } from '../../../components/badge';
-import { Input } from '../../../components/input';
-import { Switch } from '../../../components/switch';
-import { SystemSettings, SubscriptionPlan, PaymentMethod } from './types';
+import { Card } from '../../../../components/card';
+import { Button } from '../../../../components/button';
+import { Text } from '../../../../components/text';
+import { Badge } from '../../../../components/badge';
+import { Input } from '../../../../components/input';
+import { Switch } from '../../../../components/switch';
+import { SystemSettings, SubscriptionPlan, PaymentMethod } from '../types';
 
 interface BillingSettingsProps {
   settings: SystemSettings;

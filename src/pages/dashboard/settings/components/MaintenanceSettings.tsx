@@ -1,12 +1,12 @@
 import React from 'react';
-import { Card } from '../../../components/card';
-import { Button } from '../../../components/button';
-import { Text } from '../../../components/text';
-import { Badge } from '../../../components/badge';
-import { Input } from '../../../components/input';
-import { Select } from '../../../components/select';
-import { Switch } from '../../../components/switch';
-import { SystemSettings } from './types';
+import { Card } from '../../../../components/card';
+import { Button } from '../../../../components/button';
+import { Text } from '../../../../components/text';
+import { Badge } from '../../../../components/badge';
+import { Input } from '../../../../components/input';
+import { Select } from '../../../../components/select';
+import { Switch } from '../../../../components/switch';
+import { SystemSettings } from '../types';
 
 interface MaintenanceSettingsProps {
   settings: SystemSettings;
