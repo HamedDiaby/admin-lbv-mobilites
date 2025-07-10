@@ -1,5 +1,21 @@
 export { Lignes } from "./lignes";
-export { AddLigneModal } from "./AddLigneModal";
-export { default as LignesMap } from "./LignesMap";
-export type { Ligne, LigneFormData, StationIntermediaire } from "./types";
-export type { Ville as LigneVille } from "./types";
+export type { 
+  Ligne, 
+  Station as LigneStation, 
+  Ville as LigneVille, 
+  LigneFormData, 
+  LigneFilters, 
+  StationIntermediaire 
+} from "./types";
+
+// Export des composants depuis le dossier components
+export * from './components';
+
+// Export des hooks
+export * from './hooks';
+
+// Export des utilitaires
+export * from './utils';
+
+// Export des constantes
+export * from './constants';

@@ -2,17 +2,33 @@ import React, { useState } from 'react';
 import { Text, Button, Icon, Badge, Table, TableColumn, TableAction, Select, Input } from '@components';
 import { ColorsEnum } from '@utils/enums';
 import { Bus, BusFilters } from './types';
-import { Station } from '../stations/types';
 import { AddBusModal, BusDetailsModal, BusMap } from './components';
 import { useBusData } from './hooks';
 import { calculateBusPerformance, formatKilometrage } from './utils';
-import { FILTER_OPTIONS } from './constants';
+import { BUSES_FILTER_OPTIONS } from './constants';
 
 export const Buses: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'bus' | 'carte'>('bus');
   const [showAddBusModal, setShowAddBusModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Type local pour les stations d'affectation
+  interface StationAffectation {
+    id: string;
+    name: string;
+    code: string;
+    cityId: string;
+    cityName: string;
+    address: string;
+    type: string;
+    status: string;
+    capacity: number;
+    facilities: string[];
+    coordinates: { latitude: number; longitude: number };
+    createdAt: string;
+    updatedAt: string;
+  }
   
   // Couleurs selon le statut
   const STATUS_COLORS = {
@@ -41,7 +57,7 @@ export const Buses: React.FC = () => {
   const performance = calculateBusPerformance(buses);
 
   // Données simulées des stations (pour l'affectation)
-  const stations: Station[] = [
+  const stations: StationAffectation[] = [
     {
       id: '1',
       name: 'Terminal Libreville',
@@ -402,7 +418,7 @@ export const Buses: React.FC = () => {
                   label="Statut"
                   value={filters.statut}
                   onChange={(e) => handleFilterChange('statut', e.target.value)}
-                  options={FILTER_OPTIONS.statuts}
+                  options={BUSES_FILTER_OPTIONS.statuts}
                 />
               </div>
 
@@ -411,7 +427,7 @@ export const Buses: React.FC = () => {
                   label="Carburant"
                   value={filters.carburant}
                   onChange={(e) => handleFilterChange('carburant', e.target.value)}
-                  options={FILTER_OPTIONS.carburants}
+                  options={BUSES_FILTER_OPTIONS.carburants}
                 />
               </div>
 
@@ -435,7 +451,7 @@ export const Buses: React.FC = () => {
                   label="État de Santé"
                   value={filters.etatSante}
                   onChange={(e) => handleFilterChange('etatSante', e.target.value)}
-                  options={FILTER_OPTIONS.etatsSante}
+                  options={BUSES_FILTER_OPTIONS.etatsSante}
                 />
               </div>
             </div>

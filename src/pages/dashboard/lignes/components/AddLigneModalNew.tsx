@@ -1,12 +1,7 @@
 import { FC, useState, useEffect, ChangeEvent } from "react";
-import { Modal } from "../../../components/modal";
-import { Input } from "../../../components/input";
-import { Button } from "../../../components/button";
-import { Select } from "../../../components/select";
-import { Text } from "../../../components/text";
-import { Icon } from "../../../components/icon";
-import { ColorsEnum } from "../../../utils/enums";
-import { Ligne, LigneFormData, Station, StationIntermediaire, Ville } from "./types";
+import { Modal, Input, Button, Select, Text, Icon } from "@components";
+import { ColorsEnum } from "@utils/enums";
+import { Ligne, LigneFormData, Station, StationIntermediaire, Ville } from "../types";
 
 interface AddLigneModalProps {
   isOpen: boolean;

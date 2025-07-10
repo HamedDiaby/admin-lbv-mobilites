@@ -56,3 +56,9 @@ export interface LigneFormData {
   stationArriveeId: string;
   stationsIntermediaires: Omit<StationIntermediaire, 'id'>[];
 }
+
+export interface LigneFilters {
+  statut: string;
+  ville: string;
+  recherche: string;
+}

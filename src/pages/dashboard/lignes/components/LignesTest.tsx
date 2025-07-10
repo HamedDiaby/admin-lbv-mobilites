@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Text } from "../../../components/text";
+import { Text } from "@components";
 
 export const LignesTest: FC = () => {
   return (

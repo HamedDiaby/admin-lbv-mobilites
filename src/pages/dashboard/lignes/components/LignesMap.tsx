@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Polyline, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './LignesMap.css';
-import { Ligne, Ville } from './types';
+import { Ligne, Ville } from '../types';
 
 // Fix pour les icônes Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
