@@ -3,6 +3,7 @@ import { StatsOverview } from "./StatsOverview";
 import { InteractiveMap } from "./InteractiveMap";
 import { AlertsPanel } from "./AlertsPanel";
 import { RealTimeInfo } from "./RealTimeInfo";
+import { PerformanceMetrics } from "./PerformanceMetrics";
 import { Card } from "../../../components/card";
 import { Button } from "../../../components/button";
 import { Icon } from "../../../components/icon";
@@ -177,6 +178,13 @@ export const Dashboard: React.FC = () => {
 
         {/* Panneau latéral d'informations (1/4 de la largeur) */}
         <div className="space-y-4">
+          {/* Métriques de performance */}
+          <PerformanceMetrics 
+            buses={buses} 
+            stations={stations} 
+            lignes={lignes} 
+          />
+          
           {/* Informations temps réel */}
           <RealTimeInfo buses={buses} stations={stations} />
           
