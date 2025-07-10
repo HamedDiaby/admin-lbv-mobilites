@@ -54,7 +54,7 @@ export const Planning: FC = () => {
   };
 
   const handleDelete = (planning: PlanningData) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce planning ?')) {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce planning ?')) {
       deletePlanning(planning.id);
     }
   };
