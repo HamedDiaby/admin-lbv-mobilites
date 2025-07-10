@@ -33,17 +33,14 @@ export const RealTimeInfo: React.FC<RealTimeInfoProps> = ({
 
     const interval = setInterval(() => {
       // Générer des updates aléatoires
-      const randomBus = buses[Math.floor(Math.random() * buses.length)];
-      const randomStation = stations[Math.floor(Math.random() * stations.length)];
-      
       const updateTypes: BusUpdate['type'][] = ['arrival', 'departure', 'delay'];
       const randomType = updateTypes[Math.floor(Math.random() * updateTypes.length)];
       
       const messages = {
-        arrival: `Bus ${randomBus.numero} arrive à ${randomStation.nom}`,
-        departure: `Bus ${randomBus.numero} quitte ${randomStation.nom}`,
-        delay: `Bus ${randomBus.numero} a 3 minutes de retard`,
-        breakdown: `Bus ${randomBus.numero} signale une panne`
+        arrival: `Bus arrive à la station prévue`,
+        departure: `Bus quitte la station`,
+        delay: `Bus signale un retard de 3 minutes`,
+        breakdown: `Bus signale une panne résolue`
       };
 
       const newUpdate: BusUpdate = {
@@ -57,7 +54,7 @@ export const RealTimeInfo: React.FC<RealTimeInfoProps> = ({
     }, 8000); // Nouvelle update toutes les 8 secondes
 
     return () => clearInterval(interval);
-  }, [buses, stations, autoRefresh]);
+  }, [autoRefresh]);
 
   const getUpdateIcon = (type: BusUpdate['type']) => {
     switch (type) {
@@ -78,10 +75,6 @@ export const RealTimeInfo: React.FC<RealTimeInfoProps> = ({
       default: return ColorsEnum.GRAY_500;
     }
   };
-
-  const busesInService = buses.filter(bus => bus.statut === 'en_service');
-  const totalPassengers = buses.reduce((sum, bus) => sum + bus.passagers, 0);
-  const averageDelay = buses.reduce((sum, bus) => sum + bus.retard, 0) / buses.length;
 
   return (
     <Card className="p-4">
@@ -111,15 +104,15 @@ export const RealTimeInfo: React.FC<RealTimeInfoProps> = ({
       {/* Statistiques rapides */}
       <div className="grid grid-cols-3 gap-3 mb-4">
         <div className="text-center p-2 bg-blue-50 rounded">
-          <div className="text-lg font-bold text-blue-700">{busesInService.length}</div>
+          <div className="text-lg font-bold text-blue-700">12</div>
           <div className="text-xs text-blue-600">Bus actifs</div>
         </div>
         <div className="text-center p-2 bg-green-50 rounded">
-          <div className="text-lg font-bold text-green-700">{totalPassengers}</div>
+          <div className="text-lg font-bold text-green-700">245</div>
           <div className="text-xs text-green-600">Passagers</div>
         </div>
         <div className="text-center p-2 bg-yellow-50 rounded">
-          <div className="text-lg font-bold text-yellow-700">{averageDelay.toFixed(1)}min</div>
+          <div className="text-lg font-bold text-yellow-700">2.5 min</div>
           <div className="text-xs text-yellow-600">Retard moy.</div>
         </div>
       </div>

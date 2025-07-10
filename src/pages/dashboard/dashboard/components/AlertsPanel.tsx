@@ -1,10 +1,7 @@
 import React from 'react';
-import { Card } from '../../../../components/card';
-import { Badge } from '../../../../components/badge';
-import { Icon } from '../../../../components/icon';
-import { Button } from '../../../../components/button';
+import { Card, Badge, Icon, Button } from '@components';
+import { ColorsEnum } from '@utils/enums';
 import { Incident } from '../types';
-import { ColorsEnum } from '../../../../utils/enums';
 
 interface AlertsPanelProps {
   incidents: Incident[];

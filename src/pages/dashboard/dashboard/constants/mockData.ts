@@ -1,4 +1,4 @@
-import { BusPosition, Station, Ligne, Incident, DashboardStats } from './types';
+import { BusPosition, Station, Ligne, Incident, DashboardStats } from '../types';
 
 // Données de test pour les bus
 export const mockBuses: BusPosition[] = [

@@ -13,7 +13,7 @@ export {
   mockLignes, 
   mockIncidents, 
   mockDashboardStats 
-} from './mockData';
+} from './constants';
 
 // Export des composants depuis le dossier components
 export * from './components';
