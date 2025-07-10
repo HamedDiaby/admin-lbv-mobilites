@@ -4,6 +4,33 @@ import { ProfileData, ProfileFormErrors, User, ProfileSettings, SecuritySettings
 import { validateProfileForm, sanitizeProfileData, hasProfileChanged } from '../utils';
 import { getDefaultProfileSettings, generateMockAccountInfo } from '../constants';
 
+// Type pour l'utilisateur du contexte d'authentification
+type AuthUser = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  department?: string;
+  role?: string;
+  lastLogin?: string;
+  [key: string]: any;
+};
+
+// Fonction pour convertir l'utilisateur du contexte vers notre type User
+const convertAuthUserToProfileUser = (authUser: AuthUser | null): User | null => {
+  if (!authUser) return null;
+  
+  return {
+    firstName: authUser.firstName || '',
+    lastName: authUser.lastName || '',
+    email: authUser.email || '',
+    department: authUser.department || '',
+    role: authUser.role,
+    lastLogin: authUser.lastLogin,
+    status: 'active', // valeur par défaut
+    permissions: [], // valeur par défaut
+  };
+};
+
 interface UseProfileDataReturn {
   // État du profil
   user: User | null;
@@ -40,7 +67,10 @@ interface UseProfileDataReturn {
 }
 
 export const useProfileData = (): UseProfileDataReturn => {
-  const { user, updateUser } = useAuth();
+  const { user: authUser, updateUser } = useAuth();
+  
+  // Convertir l'utilisateur du contexte vers notre type User
+  const user = convertAuthUserToProfileUser(authUser);
   
   // États locaux
   const [isEditing, setIsEditing] = useState(false);

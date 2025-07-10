@@ -1,1 +1,2 @@
-export { Profile, default } from './profile';
+export { Profile } from './profile';
+export { default } from './profile';
