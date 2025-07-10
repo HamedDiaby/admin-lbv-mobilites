@@ -13,6 +13,7 @@ import { Stations } from '../pages/dashboard/stations';
 import { Lignes } from '../pages/dashboard/lignes';
 import { Buses } from '../pages/dashboard/buses';
 import { Planning } from '../pages/dashboard/planning';
+import { Clients } from '../pages/dashboard/clients';
 import { Login } from '../pages/onboarding/login';
 import { ForgotPassword } from '../pages/onboarding/forgotPassword';
 import { CreatePassword } from '../pages/onboarding/createPassword';
@@ -58,6 +59,7 @@ export const AppRouter: React.FC = () => {
           <Route path="lignes" element={<Lignes />} />
           <Route path="buses" element={<Buses />} />
           <Route path="planning" element={<Planning />} />
+          <Route path="clients" element={<Clients />} />
         </Route>
         
         {/* Page 404 */}

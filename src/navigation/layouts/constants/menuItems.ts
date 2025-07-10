@@ -16,8 +16,8 @@ export const MENU_ITEMS: MenuItem[] = [
     path: "/dashboard/analytics"
   },
   {
-    icon: "Users",
-    text: "Utilisateurs",
+    icon: "UserCheck",
+    text: "Administrateurs",
     path: "/dashboard/users"
   },
   {
@@ -39,6 +39,11 @@ export const MENU_ITEMS: MenuItem[] = [
     icon: "Calendar",
     text: "Planning",
     path: "/dashboard/planning"
+  },
+  {
+    icon: "Users",
+    text: "Clients",
+    path: "/dashboard/clients"
   },
   {
     icon: "Settings",

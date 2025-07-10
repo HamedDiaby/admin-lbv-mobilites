@@ -5,3 +5,4 @@ export * from './stations';
 export * from './lignes';
 export * from './buses';
 export * from './planning';
+export * from './clients';
