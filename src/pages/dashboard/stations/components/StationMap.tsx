@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './StationMap.css';
-import { Station, City } from './types';
+import { Station, City } from '../types';
 import { Text, Select, Button } from '@components';
 import { ColorsEnum } from '@utils/enums';
 

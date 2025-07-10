@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { Text, Button, Input, Select, Modal } from "@components";
 import { ColorsEnum } from "@utils/enums";
-import { NewCityData, CityFormErrors } from "./types";
+import { NewCityData, CityFormErrors } from "../types";
 
 interface AddCityModalProps {
   isOpen: boolean;

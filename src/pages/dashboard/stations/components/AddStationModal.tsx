@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { Text, Button, Input, Select, Modal } from "@components";
 import { ColorsEnum } from "@utils/enums";
-import { NewStationData, StationFormErrors } from "./types";
+import { NewStationData, StationFormErrors } from "../types";
 
 interface AddStationModalProps {
   isOpen: boolean;
