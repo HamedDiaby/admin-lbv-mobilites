@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import { Card } from '../../../components/card';
-import { Button } from '../../../components/button';
-import { Text } from '../../../components/text';
-import { Badge } from '../../../components/badge';
-import { Modal } from '../../../components/modal';
-import { AnalyticsData } from './types';
+import { Button, Text, Modal } from '@components';
+import { AnalyticsData } from '../types';
 
 interface ChartsModalProps {
   isOpen: boolean;

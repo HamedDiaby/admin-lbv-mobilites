@@ -12,11 +12,7 @@ import {
   ArcElement,
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
-import { Card } from '../../../components/card';
-import { Button } from '../../../components/button';
-import { Text } from '../../../components/text';
-import { Badge } from '../../../components/badge';
-import { Modal } from '../../../components/modal';
+import { Card, Button, Text, Badge, Modal } from '@components';
 import { AnalyticsData } from './types';
 
 // Enregistrement des composants Chart.js
