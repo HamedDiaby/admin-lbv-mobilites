@@ -16,6 +16,7 @@ import { Planning } from '../pages/dashboard/planning';
 import { Abonnements } from '../pages/dashboard/abonnements';
 import { Clients } from '../pages/dashboard/clients';
 import Analytics from '../pages/dashboard/analytics/analytics';
+import Settings from '../pages/dashboard/settings/settings';
 import { Login } from '../pages/onboarding/login';
 import { ForgotPassword } from '../pages/onboarding/forgotPassword';
 import { CreatePassword } from '../pages/onboarding/createPassword';
@@ -64,6 +65,7 @@ export const AppRouter: React.FC = () => {
           <Route path="planning" element={<Planning />} />
           <Route path="abonnements" element={<Abonnements />} />
           <Route path="clients" element={<Clients />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
         
         {/* Page 404 */}

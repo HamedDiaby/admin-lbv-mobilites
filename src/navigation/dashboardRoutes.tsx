@@ -8,6 +8,7 @@ import { BusesMinimal as Buses } from '../pages/dashboard/buses/BusesMinimal';
 import { Planning } from '../pages/dashboard/planning/planning';
 import { Abonnements } from '../pages/dashboard/abonnements/abonnements';
 import Analytics from '../pages/dashboard/analytics/analytics';
+import Settings from '../pages/dashboard/settings/settings';
 
 const DashboardRoutes: RouteObject[] = [
   {
@@ -45,6 +46,10 @@ const DashboardRoutes: RouteObject[] = [
   {
     path: 'analytics',
     element: <Analytics />,
+  },
+  {
+    path: 'settings',
+    element: <Settings />,
   }
 ];
 
