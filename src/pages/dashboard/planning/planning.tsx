@@ -7,6 +7,8 @@ import { Icon } from "../../../components/icon";
 import { ColorsEnum } from "../../../utils/enums";
 import { PlanningData, Chauffeur, Bus, FiltresPlanning } from "./types";
 import { AddPlanningModal } from "./AddPlanningModal";
+import { PlanningCalendar } from "./PlanningCalendar";
+import { PlanningDetailsModal } from "./PlanningDetailsModal";
 
 // Données simulées pour les chauffeurs
 const mockChauffeurs: Chauffeur[] = [
@@ -186,6 +188,8 @@ export const Planning: FC = () => {
   const [plannings, setPlannings] = useState<PlanningData[]>(mockPlannings);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingPlanning, setEditingPlanning] = useState<PlanningData | null>(null);
+  const [selectedPlanning, setSelectedPlanning] = useState<PlanningData | null>(null);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [currentView, setCurrentView] = useState<'table' | 'calendar'>('table');
   const [filtres, setFiltres] = useState<FiltresPlanning>({});
 
@@ -327,6 +331,14 @@ export const Planning: FC = () => {
 
   // Actions du tableau
   const actions: TableAction<PlanningData>[] = [
+    {
+      label: "Voir détails",
+      icon: "Eye",
+      onClick: (planning) => {
+        setSelectedPlanning(planning);
+        setIsDetailsModalOpen(true);
+      }
+    },
     {
       label: "Modifier",
       icon: "Edit",
@@ -552,9 +564,13 @@ export const Planning: FC = () => {
         </div>
       ) : (
         <div className="bg-white border border-border rounded-lg p-4">
-          <Text variant="h3" className="text-center text-text-secondary">
-            Vue calendrier en cours de développement
-          </Text>
+          <PlanningCalendar
+            plannings={plannings}
+            onPlanningClick={(planning) => {
+              setSelectedPlanning(planning);
+              setIsDetailsModalOpen(true);
+            }}
+          />
         </div>
       )}
 
@@ -566,6 +582,20 @@ export const Planning: FC = () => {
         editingPlanning={editingPlanning}
         chauffeurs={mockChauffeurs}
         bus={mockBus}
+      />
+
+      {/* Modal de détails */}
+      <PlanningDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => {
+          setIsDetailsModalOpen(false);
+          setSelectedPlanning(null);
+        }}
+        planning={selectedPlanning}
+        onEdit={(planning) => {
+          setEditingPlanning(planning);
+          setIsAddModalOpen(true);
+        }}
       />
     </div>
   );
