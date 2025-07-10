@@ -1,14 +1,14 @@
 import { FC, useState } from "react";
-import { Modal } from "../../../components/modal";
-import { Text } from "../../../components/text";
-import { Badge } from "../../../components/badge";
-import { Button } from "../../../components/button";
-import { Icon } from "../../../components/icon";
-import { Input } from "../../../components/input";
-import { Select } from "../../../components/select";
-import { QRScanner } from "../../../components/QRScanner";
-import { ColorsEnum } from "../../../utils/enums";
-import { VerificationQRData, VerificationQRResult } from "./types";
+import { Modal } from "../../../../components/modal";
+import { Text } from "../../../../components/text";
+import { Badge } from "../../../../components/badge";
+import { Button } from "../../../../components/button";
+import { Icon } from "../../../../components/icon";
+import { Input } from "../../../../components/input";
+import { Select } from "../../../../components/select";
+import { QRScanner } from "../../../../components/QRScanner";
+import { ColorsEnum } from "../../../../utils/enums";
+import { VerificationQRData, VerificationQRResult } from "../types";
 
 interface QRScannerModalProps {
   isOpen: boolean;

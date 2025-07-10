@@ -1,12 +1,12 @@
 import { FC, useState } from "react";
-import { Modal } from "../../../components/modal";
-import { Text } from "../../../components/text";
-import { Badge } from "../../../components/badge";
-import { Button } from "../../../components/button";
-import { Icon } from "../../../components/icon";
-import { Table, TableColumn } from "../../../components/table";
-import { ColorsEnum } from "../../../utils/enums";
-import { Client, Abonnement } from "./types";
+import { Modal } from "../../../../components/modal";
+import { Text } from "../../../../components/text";
+import { Badge } from "../../../../components/badge";
+import { Button } from "../../../../components/button";
+import { Icon } from "../../../../components/icon";
+import { Table, TableColumn } from "../../../../components/table";
+import { ColorsEnum } from "../../../../utils/enums";
+import { Client, Abonnement } from "../types";
 
 interface ClientDetailsModalProps {
   isOpen: boolean;
