@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { Modal, Text, Input, Select, Button } from "@components";
 import { ColorsEnum } from "@utils/enums";
-import { NewBusData, BusFormErrors } from "./types";
+import { NewBusData, BusFormErrors } from "../types";
 
 interface AddBusModalProps {
   isOpen: boolean;

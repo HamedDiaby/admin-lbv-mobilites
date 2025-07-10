@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { Icon as LeafletIcon, LatLngBounds } from 'leaflet';
 import { Text, Badge, Button } from '@components';
 import { ColorsEnum } from '@utils/enums';
-import { Bus } from './types';
+import { Bus } from '../types';
 import 'leaflet/dist/leaflet.css';
 import './BusMap.css';
 

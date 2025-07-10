@@ -4,7 +4,7 @@ import { Profile } from '../pages/dashboard/profile/profile';
 import { Users } from '../pages/dashboard/users/users';
 import { Stations } from '../pages/dashboard/stations/stations';
 import { Lignes } from '../pages/dashboard/lignes/lignes';
-import { BusesMinimal as Buses } from '../pages/dashboard/buses/BusesMinimal';
+import { Buses } from '../pages/dashboard/buses';
 import { Planning } from '../pages/dashboard/planning/planning';
 import { Abonnements } from '../pages/dashboard/abonnements/abonnements';
 import Analytics from '../pages/dashboard/analytics/analytics';

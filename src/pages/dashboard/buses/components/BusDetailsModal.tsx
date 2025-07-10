@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { Modal, Text, Button, Badge } from "@components";
 import { ColorsEnum } from "@utils/enums";
-import { Bus, OBD2Data } from "./types";
+import { Bus, OBD2Data } from "../types";
 
 interface BusDetailsModalProps {
   isOpen: boolean;
