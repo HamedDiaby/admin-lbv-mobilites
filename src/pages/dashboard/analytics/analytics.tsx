@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Button, Text, Badge } from '@components';
-import { ChartsModalAdvanced, MiniChart } from './components';
+import { ChartsModalAdvanced } from './components';
 import { useAnalyticsData } from './hooks';
 import { calculatePerformanceMetrics, formatCurrency, formatNumber } from './utils';
-import { DEFAULT_KPIS } from './constants';
 
 const Analytics: React.FC = () => {
   const [showChartsModal, setShowChartsModal] = useState(false);

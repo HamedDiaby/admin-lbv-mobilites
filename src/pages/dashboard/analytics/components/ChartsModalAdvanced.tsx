@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { Card, Button, Text, Badge, Modal } from '@components';
-import { AnalyticsData } from './types';
+import { AnalyticsData, RevenueData, LineTripsData, UserAgeData, BusUtilizationData } from '../types';
 
 // Enregistrement des composants Chart.js
 ChartJS.register(
@@ -51,14 +51,14 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
 
   // Configuration pour le graphique de revenus (ligne)
   const revenueChartData = {
-    labels: data.revenueEvolution.slice(-30).map(item => {
+    labels: data.revenueEvolution.slice(-30).map((item: RevenueData) => {
       const date = new Date(item.date);
       return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
     }),
     datasets: [
       {
         label: 'Revenus totaux',
-        data: data.revenueEvolution.slice(-30).map(item => item.revenue),
+        data: data.revenueEvolution.slice(-30).map((item: RevenueData) => item.revenue),
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.1)',
         borderWidth: 2,
@@ -67,7 +67,7 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
       },
       {
         label: 'Revenus abonnements',
-        data: data.revenueEvolution.slice(-30).map(item => item.subscriptions),
+        data: data.revenueEvolution.slice(-30).map((item: RevenueData) => item.subscriptions),
         borderColor: 'rgb(16, 185, 129)',
         backgroundColor: 'rgba(16, 185, 129, 0.1)',
         borderWidth: 2,
@@ -76,7 +76,7 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
       },
       {
         label: 'Revenus tickets',
-        data: data.revenueEvolution.slice(-30).map(item => item.tickets),
+        data: data.revenueEvolution.slice(-30).map((item: RevenueData) => item.tickets),
         borderColor: 'rgb(245, 158, 11)',
         backgroundColor: 'rgba(245, 158, 11, 0.1)',
         borderWidth: 2,
@@ -122,11 +122,11 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
 
   // Configuration pour le graphique de performance (barres)
   const performanceChartData = {
-    labels: data.tripsByLine.map(line => line.lineName),
+    labels: data.tripsByLine.map((line: LineTripsData) => line.lineName),
     datasets: [
       {
         label: 'Nombre de voyages',
-        data: data.tripsByLine.map(line => line.trips),
+        data: data.tripsByLine.map((line: LineTripsData) => line.trips),
         backgroundColor: 'rgba(59, 130, 246, 0.8)',
         borderColor: 'rgb(59, 130, 246)',
         borderWidth: 1,
@@ -134,7 +134,7 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
       },
       {
         label: 'Revenus (en milliers)',
-        data: data.tripsByLine.map(line => line.revenue / 1000),
+        data: data.tripsByLine.map((line: LineTripsData) => line.revenue / 1000),
         backgroundColor: 'rgba(16, 185, 129, 0.8)',
         borderColor: 'rgb(16, 185, 129)',
         borderWidth: 1,
@@ -206,11 +206,11 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
 
   // Configuration pour le graphique démographique (donut)
   const demographicsChartData = {
-    labels: data.usersByAge.map(age => age.ageRange),
+    labels: data.usersByAge.map((age: UserAgeData) => age.ageRange),
     datasets: [
       {
         label: 'Répartition par âge',
-        data: data.usersByAge.map(age => age.count),
+        data: data.usersByAge.map((age: UserAgeData) => age.count),
         backgroundColor: [
           'rgba(239, 68, 68, 0.8)',
           'rgba(245, 158, 11, 0.8)',
@@ -247,7 +247,7 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
       tooltip: {
         callbacks: {
           label: function(context: any) {
-            const total = data.usersByAge.reduce((sum, age) => sum + age.count, 0);
+            const total = data.usersByAge.reduce((sum: number, age: UserAgeData) => sum + age.count, 0);
             const percentage = ((context.parsed / total) * 100).toFixed(1);
             return `${context.label}: ${formatNumber(context.parsed)} (${percentage}%)`;
           }
@@ -258,17 +258,17 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
 
   // Graphique d'utilisation des bus (barres horizontales)
   const busUtilizationData = {
-    labels: data.busUtilization.map(bus => bus.busNumber),
+    labels: data.busUtilization.map((bus: BusUtilizationData) => bus.busNumber),
     datasets: [
       {
         label: 'Taux d\'utilisation (%)',
-        data: data.busUtilization.map(bus => bus.utilization),
-        backgroundColor: data.busUtilization.map(bus => 
+        data: data.busUtilization.map((bus: BusUtilizationData) => bus.utilization),
+        backgroundColor: data.busUtilization.map((bus: BusUtilizationData) => 
           bus.utilization >= 90 ? 'rgba(239, 68, 68, 0.8)' :
           bus.utilization >= 75 ? 'rgba(245, 158, 11, 0.8)' :
           'rgba(34, 197, 94, 0.8)'
         ),
-        borderColor: data.busUtilization.map(bus => 
+        borderColor: data.busUtilization.map((bus: BusUtilizationData) => 
           bus.utilization >= 90 ? 'rgb(239, 68, 68)' :
           bus.utilization >= 75 ? 'rgb(245, 158, 11)' :
           'rgb(34, 197, 94)'
@@ -341,7 +341,7 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
                   Peak Revenus
                 </Text>
                 <Text variant="h4" className="text-green-900 font-bold">
-                  {formatCurrency(Math.max(...data.revenueEvolution.map(r => r.revenue)))}
+                  {formatCurrency(Math.max(...data.revenueEvolution.map((r: RevenueData) => r.revenue)))}
                 </Text>
               </Card>
               <Card className="p-4 bg-purple-50">
@@ -375,7 +375,7 @@ const ChartsModalAdvanced: React.FC<ChartsModalProps> = ({ isOpen, onClose, data
               <Doughnut data={demographicsChartData} options={demographicsChartOptions} />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {data.usersByAge.map((age, index) => (
+              {data.usersByAge.map((age: UserAgeData, index: number) => (
                 <Card key={index} className="p-4 text-center">
                   <Text variant="p3" className="text-gray-700 font-medium">
                     {age.ageRange}

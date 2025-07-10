@@ -1,6 +1,6 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { AnalyticsData } from './types';
+import { AnalyticsData, RevenueData, TripData, UserGrowthData } from '../types';
 
 interface MiniChartProps {
   data: AnalyticsData;
@@ -16,7 +16,7 @@ const MiniChart: React.FC<MiniChartProps> = ({ data, type, height = 100 }) => {
           labels: data.revenueEvolution.slice(-7).map(() => ''),
           datasets: [
             {
-              data: data.revenueEvolution.slice(-7).map(item => item.revenue),
+              data: data.revenueEvolution.slice(-7).map((item: RevenueData) => item.revenue),
               borderColor: 'rgb(59, 130, 246)',
               backgroundColor: 'rgba(59, 130, 246, 0.1)',
               borderWidth: 2,
@@ -32,7 +32,7 @@ const MiniChart: React.FC<MiniChartProps> = ({ data, type, height = 100 }) => {
           labels: data.tripsEvolution.slice(-7).map(() => ''),
           datasets: [
             {
-              data: data.tripsEvolution.slice(-7).map(item => item.trips),
+              data: data.tripsEvolution.slice(-7).map((item: TripData) => item.trips),
               borderColor: 'rgb(16, 185, 129)',
               backgroundColor: 'rgba(16, 185, 129, 0.1)',
               borderWidth: 2,
@@ -48,7 +48,7 @@ const MiniChart: React.FC<MiniChartProps> = ({ data, type, height = 100 }) => {
           labels: data.userGrowth.slice(-7).map(() => ''),
           datasets: [
             {
-              data: data.userGrowth.slice(-7).map(item => item.newUsers),
+              data: data.userGrowth.slice(-7).map((item: UserGrowthData) => item.newUsers),
               borderColor: 'rgb(147, 51, 234)',
               backgroundColor: 'rgba(147, 51, 234, 0.1)',
               borderWidth: 2,
