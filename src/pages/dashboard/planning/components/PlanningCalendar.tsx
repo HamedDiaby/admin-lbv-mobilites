@@ -1,11 +1,11 @@
 import { FC, useState, useMemo, useCallback } from "react";
-import { Text } from "../../../components/text";
-import { Button } from "../../../components/button";
-import { Icon } from "../../../components/icon";
-import { Badge } from "../../../components/badge";
-import { Select } from "../../../components/select";
-import { ColorsEnum } from "../../../utils/enums";
-import { PlanningData } from "./types";
+import { Text } from "../../../../components/text";
+import { Button } from "../../../../components/button";
+import { Icon } from "../../../../components/icon";
+import { Badge } from "../../../../components/badge";
+import { Select } from "../../../../components/select";
+import { ColorsEnum } from "../../../../utils/enums";
+import { PlanningData } from "../types";
 
 interface PlanningCalendarProps {
   plannings: PlanningData[];

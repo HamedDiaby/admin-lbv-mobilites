@@ -1,12 +1,12 @@
 import { FC, useState, useEffect } from "react";
-import { Modal } from "../../../components/modal";
-import { Input } from "../../../components/input";
-import { Select } from "../../../components/select";
-import { Button } from "../../../components/button";
-import { Text } from "../../../components/text";
-import { Icon } from "../../../components/icon";
-import { ColorsEnum } from "../../../utils/enums";
-import { PlanningData, PlanningFormData, Chauffeur, Bus, Horaire, Recurrence } from "./types";
+import { Modal } from "../../../../components/modal";
+import { Input } from "../../../../components/input";
+import { Select } from "../../../../components/select";
+import { Button } from "../../../../components/button";
+import { Text } from "../../../../components/text";
+import { Icon } from "../../../../components/icon";
+import { ColorsEnum } from "../../../../utils/enums";
+import { PlanningData, PlanningFormData, Chauffeur, Bus, Horaire, Recurrence } from "../types";
 
 interface AddPlanningModalProps {
   isOpen: boolean;

@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { Modal } from "../../../components/modal";
-import { Text } from "../../../components/text";
-import { Badge } from "../../../components/badge";
-import { Button } from "../../../components/button";
-import { Icon } from "../../../components/icon";
-import { ColorsEnum } from "../../../utils/enums";
-import { PlanningData } from "./types";
+import { Modal } from "../../../../components/modal";
+import { Text } from "../../../../components/text";
+import { Badge } from "../../../../components/badge";
+import { Button } from "../../../../components/button";
+import { Icon } from "../../../../components/icon";
+import { ColorsEnum } from "../../../../utils/enums";
+import { PlanningData } from "../types";
 
 interface PlanningDetailsModalProps {
   isOpen: boolean;
