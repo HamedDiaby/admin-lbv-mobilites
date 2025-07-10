@@ -1,25 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { BusPosition, Station, Ligne, MapFilter, Incident } from './types';
-import { Card } from '../../../components/card';
-import { Button } from '../../../components/button';
-import { Badge } from '../../../components/badge';
-import { Switch } from '../../../components/switch';
-import { Select } from '../../../components/select';
-import { Icon } from '../../../components/icon';
-import { ColorsEnum } from '../../../utils/enums';
+import { BusPosition, Station, Ligne, MapFilter, Incident } from '../types';
+import { Card } from '../../../../components/card';
+import { Button } from '../../../../components/button';
+import { Badge } from '../../../../components/badge';
+import { Switch } from '../../../../components/switch';
+import { Select } from '../../../../components/select';
+import { Icon } from '../../../../components/icon';
+import { ColorsEnum } from '../../../../utils/enums';
 import 'leaflet/dist/leaflet.css';
 
 interface InteractiveMapProps {
   buses: BusPosition[];
   stations: Station[];
-  lignes: Ligne[];
-  incidents: Incident[];
-  filters: MapFilter;
-  onFiltersChange: (filters: MapFilter) => void;
+  selectedBus?: BusPosition | null;
+  selectedStation?: Station | null;
   onBusClick?: (bus: BusPosition) => void;
   onStationClick?: (station: Station) => void;
+  mapFilters: MapFilter;
+  onFiltersChange: (filters: MapFilter) => void;
 }
 
 // Création des icônes personnalisées
@@ -134,14 +134,19 @@ const MapCenter: React.FC<{ buses: BusPosition[] }> = ({ buses }) => {
 export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   buses,
   stations,
-  lignes,
-  incidents,
-  filters,
+  selectedBus,
+  selectedStation,
+  mapFilters,
   onFiltersChange,
   onBusClick,
   onStationClick
 }) => {
   const [selectedLigne, setSelectedLigne] = useState<string>('');
+
+  // Données mockées pour les lignes et incidents (à remplacer par des props dans le futur)
+  const lignes: Ligne[] = [];
+  const incidents: Incident[] = [];
+  const filters = mapFilters;
 
   // Filtrage des données selon les filtres
   const filteredBuses = useMemo(() => {

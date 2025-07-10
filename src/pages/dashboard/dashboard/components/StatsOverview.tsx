@@ -1,9 +1,9 @@
 import React from 'react';
-import { Card } from '../../../components/card';
-import { Badge } from '../../../components/badge';
-import { Icon } from '../../../components/icon';
-import { DashboardStats } from './types';
-import { ColorsEnum } from '../../../utils/enums';
+import { Card } from '../../../../components/card';
+import { Badge } from '../../../../components/badge';
+import { Icon } from '../../../../components/icon';
+import { DashboardStats } from '../types';
+import { ColorsEnum } from '../../../../utils/enums';
 
 interface StatsOverviewProps {
   stats: DashboardStats;

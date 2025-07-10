@@ -1,19 +1,19 @@
 import React from 'react';
-import { Card } from '../../../components/card';
-import { Badge } from '../../../components/badge';
-import { Icon } from '../../../components/icon';
-import { Button } from '../../../components/button';
-import { Incident } from './types';
-import { ColorsEnum } from '../../../utils/enums';
+import { Card } from '../../../../components/card';
+import { Badge } from '../../../../components/badge';
+import { Icon } from '../../../../components/icon';
+import { Button } from '../../../../components/button';
+import { Incident } from '../types';
+import { ColorsEnum } from '../../../../utils/enums';
 
 interface AlertsPanelProps {
   incidents: Incident[];
-  onIncidentResolve?: (incidentId: string) => void;
+  onResolveIncident?: (incidentId: string) => void;
 }
 
 export const AlertsPanel: React.FC<AlertsPanelProps> = ({ 
   incidents, 
-  onIncidentResolve 
+  onResolveIncident 
 }) => {
   const activeIncidents = incidents.filter(incident => incident.statut === 'actif');
 
@@ -101,11 +101,11 @@ export const AlertsPanel: React.FC<AlertsPanelProps> = ({
                 </div>
               </div>
               
-              {onIncidentResolve && (
+              {onResolveIncident && (
                 <Button
                   size="sm"
                   appearance="outline"
-                  onClick={() => onIncidentResolve(incident.id)}
+                  onClick={() => onResolveIncident(incident.id)}
                   className="text-xs"
                 >
                   Résoudre

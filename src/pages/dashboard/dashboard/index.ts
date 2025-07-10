@@ -14,8 +14,6 @@ export {
   mockIncidents, 
   mockDashboardStats 
 } from './mockData';
-export { InteractiveMap } from './InteractiveMap';
-export { StatsOverview } from './StatsOverview';
-export { AlertsPanel } from './AlertsPanel';
-export { RealTimeInfo } from './RealTimeInfo';
-export { PerformanceMetrics } from './PerformanceMetrics';
+
+// Export des composants depuis le dossier components
+export * from './components';

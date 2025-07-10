@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from '../../../components/card';
-import { Badge } from '../../../components/badge';
-import { Icon } from '../../../components/icon';
-import { Button } from '../../../components/button';
-import { BusPosition, Station } from './types';
-import { ColorsEnum } from '../../../utils/enums';
+import { Card } from '../../../../components/card';
+import { Badge } from '../../../../components/badge';
+import { Icon } from '../../../../components/icon';
+import { Button } from '../../../../components/button';
+import { BusPosition, Station } from '../types';
+import { ColorsEnum } from '../../../../utils/enums';
 
 interface RealTimeInfoProps {
-  buses: BusPosition[];
-  stations: Station[];
+  selectedBus: BusPosition | null;
+  selectedStation: Station | null;
+  onClearSelection: () => void;
 }
 
 interface BusUpdate {
@@ -18,7 +19,11 @@ interface BusUpdate {
   type: 'arrival' | 'departure' | 'delay' | 'breakdown';
 }
 
-export const RealTimeInfo: React.FC<RealTimeInfoProps> = ({ buses, stations }) => {
+export const RealTimeInfo: React.FC<RealTimeInfoProps> = ({ 
+  selectedBus, 
+  selectedStation, 
+  onClearSelection 
+}) => {
   const [updates, setUpdates] = useState<BusUpdate[]>([]);
   const [autoRefresh, setAutoRefresh] = useState(true);
 
