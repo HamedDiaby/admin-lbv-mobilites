@@ -6,7 +6,7 @@ import {
   FORGOT_PASSWORD_TIMEOUTS 
 } from '../constants';
 
-export const useForgotPasswordForm = () => {
+export const useForgotPasswordForm = (onSuccess?: () => void) => {
   const [formData, setFormData] = useState<ForgotPasswordFormData>({
     email: ''
   });
@@ -94,6 +94,13 @@ export const useForgotPasswordForm = () => {
         isSuccess: true,
         email: formData.email
       }));
+      
+      // Navigation vers createPassword après succès
+      if (onSuccess) {
+        setTimeout(() => {
+          onSuccess();
+        }, 1500); // Délai pour permettre à l'utilisateur de voir le message de succès
+      }
     } catch (error) {
       setState(prev => ({ 
         ...prev, 
@@ -101,7 +108,7 @@ export const useForgotPasswordForm = () => {
         error: error instanceof Error ? error.message : FORGOT_PASSWORD_ERROR_MESSAGES.SERVER_ERROR
       }));
     }
-  }, [formData.email, validateForm, sendResetEmail]);
+  }, [formData.email, validateForm, sendResetEmail, onSuccess]);
 
   // Effacer l'erreur
   const clearError = useCallback(() => {

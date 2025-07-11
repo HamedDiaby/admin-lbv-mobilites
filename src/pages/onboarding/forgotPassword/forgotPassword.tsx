@@ -12,6 +12,12 @@ import { FORGOT_PASSWORD_ROUTES } from './constants';
 
 export const ForgotPassword: FC = () => {
   const navigate = useNavigate();
+  
+  // Navigation vers la page createPassword après envoi réussi
+  const handleNavigateToCreatePassword = () => {
+    navigate(FORGOT_PASSWORD_ROUTES.CREATE_PASSWORD);
+  };
+
   const {
     formData,
     errors,
@@ -20,7 +26,7 @@ export const ForgotPassword: FC = () => {
     handleSubmit,
     clearError,
     resetForm
-  } = useForgotPasswordForm();
+  } = useForgotPasswordForm(handleNavigateToCreatePassword);
 
   // Navigation vers la page de connexion
   const handleBackToLogin = () => {
