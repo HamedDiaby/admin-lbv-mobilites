@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "public": "build",
+    "site": "admin-lbv-mobility",
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
