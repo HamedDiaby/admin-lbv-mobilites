@@ -8,7 +8,8 @@ import {
   ErrorMessage,
   LoginForm,
   TestCredentialsInfo,
-  LoginFooter
+  LoginFooter,
+  LoginLinks
 } from "./components";
 
 const Login: FC = () => {
@@ -74,6 +75,9 @@ const Login: FC = () => {
 
             {/* Informations de test */}
             <TestCredentialsInfo />
+
+            {/* Liens d'aide */}
+            <LoginLinks isLoading={isLoading} isLocked={isLocked} />
           </div>
         </div>
 

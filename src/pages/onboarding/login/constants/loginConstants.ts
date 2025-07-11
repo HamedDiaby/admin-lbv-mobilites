@@ -82,6 +82,34 @@ export const LOGIN_ENDPOINTS = {
   RESET_PASSWORD: '/api/auth/reset-password'
 } as const;
 
+// Routes de navigation
+export const LOGIN_ROUTES = {
+  LOGIN: '/auth/login',
+  FORGOT_PASSWORD: '/auth/forgot-password',
+  CREATE_PASSWORD: '/auth/create-password',
+  RESET_PASSWORD: '/auth/reset-password',
+  DASHBOARD: '/dashboard'
+} as const;
+
+// Descriptions des liens de navigation
+export const NAVIGATION_LINKS = {
+  FORGOT_PASSWORD: {
+    text: 'Mot de passe oublié ?',
+    description: 'Réinitialiser votre mot de passe par email',
+    route: LOGIN_ROUTES.FORGOT_PASSWORD
+  },
+  CREATE_PASSWORD: {
+    text: 'Créer un compte',
+    description: 'Créer un nouveau compte utilisateur',
+    route: LOGIN_ROUTES.CREATE_PASSWORD
+  },
+  SUPPORT: {
+    text: 'Besoin d\'aide ?',
+    description: 'Contacter le support technique',
+    email: 'support@lbv-mobilites.ga'
+  }
+} as const;
+
 // Clés de stockage local
 export const STORAGE_KEYS = {
   AUTH_TOKEN: 'lbv_auth_token',

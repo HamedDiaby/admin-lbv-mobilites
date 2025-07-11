@@ -1,7 +1,9 @@
 import { FC } from 'react';
+import { Link } from 'react-router-dom';
 import { Text, Input, Icon, Checkbox } from '../../../../components';
 import { ColorsEnum } from '../../../../utils/enums';
 import { LoginFormData, LoginFormErrors } from '../types';
+import { LOGIN_ROUTES } from '../constants';
 
 interface LoginFormProps {
   formData: LoginFormData;
@@ -78,13 +80,16 @@ export const LoginForm: FC<LoginFormProps> = ({
             Se souvenir de moi
           </Text>
         </label>
-        <button
-          type="button"
-          className="text-xs text-blue hover:text-blue-dark transition-colors hover:underline font-medium"
-          disabled={isLoading || isLocked}
+        <Link
+          to={LOGIN_ROUTES.FORGOT_PASSWORD}
+          className="text-xs text-blue hover:text-blue-dark transition-colors hover:underline font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{ 
+            pointerEvents: isLoading || isLocked ? 'none' : 'auto',
+            opacity: isLoading || isLocked ? 0.5 : 1 
+          }}
         >
           Mot de passe oublié ?
-        </button>
+        </Link>
       </div>
 
       {/* Bouton de connexion */}
